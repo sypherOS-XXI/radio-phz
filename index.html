@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Rádio Ao Vivo</title>
+    <!-- Ícones do Font Awesome para redes sociais -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- PLAYER DE RÁDIO FIXO NO TOPO -->
+    <div id="radio-player-container">
+        <audio id="audio-stream" src="https://stream.zeno.fm/41virxfygt0uv"></audio>
+        
+        <div class="radio-info">
+            <img src="https://raw.githubusercontent.com/sypherOS-XXI/PHZ-MUSIC/main/phz%20perfil.jpg" alt="Logo da Rádio PHZ MUSIC" class="radio-logo">
+            <div class="radio-text">
+                <span class="status">AO VIVO</span>
+                <span class="radio-name">PHZ Music</span>
+            </div>
+        </div>
+        
+        <div class="player-controls">
+            <button id="play-pause-btn" aria-label="Tocar ou Pausar"><svg id="play-icon" xmlns="http://www.w3.org/2000/svg" viewBox="-2 -2 28 28" fill="currentColor" width="32px" height="32px"><path d="M8 5v14l11-7z"></path></svg><svg id="pause-icon" xmlns="http://www.w3.org/2000/svg" viewBox="-2 -2 28 28" fill="currentColor" width="32px" height="32px" style="display: none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg></button>
+        </div>
+
+        <div class="volume-control">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24px" height="24px"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"></path></svg>
+            <input type="range" id="volume-slider" min="0" max="1" step="0.05" value="1" aria-label="Controle de volume">
+        </div>
+    </div>
+
+    <!-- BARRA DE NAVEGAÇÃO HORIZONTAL FIXA -->
+    <div class="secondary-nav-container">
+        <nav class="main-nav">
+            <a href="#" class="nav-link active" data-page="inicio">Início</a>
+            <a href="#" class="nav-link" data-page="sobre">Sobre Nós</a>
+            <a href="#" class="nav-link" data-page="anuncie">Anuncie</a>
+            <a href="#" class="nav-link" data-page="contato">Contato</a>
+        </nav>
+    </div>
+
+
+    <!-- CONTEÚDO PRINCIPAL DA PÁGINA -->
+    <main class="content">
+
+        <!-- PÁGINA: INÍCIO -->
+        <div id="inicio" class="page-content active">
+            <div class="banner-container">
+                <a href="#" target="_blank" rel="noopener noreferrer">
+                    <img src="https://placehold.co/728x90/e0e0e0/333?text=Banner+728x90" alt="Anúncio principal">
+                </a>
+            </div>
+            <div class="main-layout">
+                <section class="main-column">
+                    <h2 class="section-title">Notícias e Destaques</h2>
+                    <article class="post-card">
+                        <img src="https://placehold.co/600x300/cccccc/333?text=Imagem+da+Notícia" alt="Imagem da notícia">
+                        <h3>Novo álbum da banda X acaba de ser lançado!</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet...</p>
+                        <a href="#" class="read-more">Leia Mais &rarr;</a>
+                    </article>
+                </section>
+                <aside class="sidebar">
+                    <div class="sidebar-widget">
+                        <h3 class="widget-title">Programação do Dia</h3>
+                        <ul class="schedule-list">
+                            <li><strong>08:00</strong> - Manhã Sertaneja</li>
+                            <li><strong>12:00</strong> - Pop Hits</li>
+                            <li><strong>16:00</strong> - Clássicos do Rock</li>
+                        </ul>
+                    </div>
+                    <div class="sidebar-widget">
+                        <a href="https://wa.me/5511999999999?text=Olá!%20Gostaria%20de%20pedir%20uma%20música!" class="request-button" target="_blank" rel="noopener noreferrer">
+                            <i class="fas fa-music"></i> Peça sua Música
+                        </a>
+                    </div>
+                </aside>
+            </div>
+        </div>
+
+        <!-- PÁGINA: SOBRE NÓS -->
+        <div id="sobre" class="page-content">
+            <h2 class="section-title">Sobre a PHZ Music</h2>
+            <div class="post-card">
+                <h3>Nossa História</h3>
+                <p>A PHZ Music nasceu da paixão pela música e do desejo de criar uma comunidade vibrante de ouvintes. Fundada em [Ano de Fundação], nossa missão é trazer a melhor seleção musical, notícias relevantes e entretenimento de qualidade para o seu dia a dia.</p>
+                <h3>Nossa Equipe</h3>
+                <p>Somos formados por uma equipe de locutores, produtores e entusiastas da música dedicados a fazer da PHZ Music a sua rádio preferida. Conheça quem faz a mágica acontecer nos bastidores e no ar!</p>
+            </div>
+        </div>
+
+        <!-- PÁGINA: ANUNCIE -->
+        <div id="anuncie" class="page-content">
+            <h2 class="section-title">Anuncie Conosco</h2>
+            <div class="post-card">
+                <h3>Por que anunciar na PHZ Music?</h3>
+                <p>Alcançar um público engajado e apaixonado por música nunca foi tão fácil. Oferecemos pacotes de publicidade flexíveis para atender às necessidades da sua marca, desde spots comerciais durante nossa programação até banners em nosso site.</p>
+                <ul>
+                    <li>Alta visibilidade para sua marca.</li>
+                    <li>Público segmentado e fiel.</li>
+                    <li>Formatos de anúncio criativos e eficazes.</li>
+                </ul>
+                <p>Entre em contato conosco pelo e-mail <strong>comercial-phzmusic@gmail.com</strong> e vamos encontrar a melhor solução para você!</p>
+            </div>
+        </div>
+
+        <!-- PÁGINA: CONTATO -->
+        <div id="contato" class="page-content">
+            <h2 class="section-title">Fale Conosco</h2>
+            <div class="post-card">
+                <h3>Estamos aqui para ouvir você!</h3>
+                <p>Tem alguma sugestão, dúvida ou quer apenas mandar um alô? Use um dos canais abaixo:</p>
+                <p><strong><i class="fab fa-whatsapp"></i> WhatsApp:</strong> <a href="https://wa.me/5511999999999?text=Olá!%20Entrei%20em%20contato%20pelo%20site."> (11) 99999-9999</a> (Pedidos de música)</p>
+                <p><strong><i class="fas fa-envelope"></i> E-mail:</strong> radiophzmusic@gmail.com (Assuntos gerais)</p>
+                <br>
+                <h3>Nossas Redes Sociais</h3>
+                <div class="social-icons">
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <p>&copy; 2024 PHZ Music. Todos os direitos reservados.</p>
+    </footer>
+    
+    <script src="script.js"></script>
+</body>
+</html>
