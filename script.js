@@ -34,25 +34,77 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     updateIcon();
 
-    // --- LÓGICA DE NAVEGAÇÃO POR ABAS ---
+    // --- LÓGICA DE NAVEGAÇÃO POR ABAS (PÁGINAS) ---
     const navLinks = document.querySelectorAll('.nav-link');
     const pageContents = document.querySelectorAll('.page-content');
 
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault(); 
-
             const targetPageId = link.getAttribute('data-page');
 
             navLinks.forEach(navLink => navLink.classList.remove('active'));
             pageContents.forEach(page => page.classList.remove('active'));
 
             link.classList.add('active');
-
             const targetPage = document.getElementById(targetPageId);
             if (targetPage) {
                 targetPage.classList.add('active');
             }
         });
     });
+
+    // --- LÓGICA DO MENU HORIZONTAL SCROLLÁVEL ---
+    const navPrev = document.getElementById('nav-prev');
+    const navNext = document.getElementById('nav-next');
+    const mainNav = document.querySelector('.main-nav');
+    const navLinksWrapper = document.querySelector('.nav-links-wrapper');
+    
+    let currentTranslateX = 0;
+    const SCROLL_AMOUNT = 100; // Quanto rolar por clique
+
+    const checkNavOverflow = () => {
+        if (!mainNav || !navLinksWrapper) return;
+
+        const maxScroll = navLinksWrapper.scrollWidth - mainNav.clientWidth;
+
+        if (maxScroll > 0) {
+            // Se houver overflow, atualiza a visibilidade das setas
+            navPrev.classList.toggle('hidden', currentTranslateX === 0);
+            navNext.classList.toggle('hidden', Math.abs(currentTranslateX) >= maxScroll - 1);
+        } else {
+            // Se não houver overflow, esconde ambas as setas e reseta a posição
+            navPrev.classList.add('hidden');
+            navNext.classList.add('hidden');
+            currentTranslateX = 0;
+            navLinksWrapper.style.transform = `translateX(0px)`;
+        }
+    };
+
+    navNext.addEventListener('click', () => {
+        const maxScroll = navLinksWrapper.scrollWidth - mainNav.clientWidth;
+        currentTranslateX -= SCROLL_AMOUNT;
+        
+        if (Math.abs(currentTranslateX) > maxScroll) {
+            currentTranslateX = -maxScroll;
+        }
+
+        navLinksWrapper.style.transform = `translateX(${currentTranslateX}px)`;
+        checkNavOverflow();
+    });
+
+    navPrev.addEventListener('click', () => {
+        currentTranslateX += SCROLL_AMOUNT;
+
+        if (currentTranslateX > 0) {
+            currentTranslateX = 0;
+        }
+
+        navLinksWrapper.style.transform = `translateX(${currentTranslateX}px)`;
+        checkNavOverflow();
+    });
+
+    // Verifica o overflow ao carregar e ao redimensionar a janela
+    window.addEventListener('resize', checkNavOverflow);
+    checkNavOverflow(); // Executa uma vez ao carregar a página
 });
