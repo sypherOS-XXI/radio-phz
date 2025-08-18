@@ -59,6 +59,7 @@ body {
     z-index: 999;
     box-sizing: border-box;
     display: flex;
+    justify-content: center; /* Centraliza o menu no desktop */
     align-items: center;
 }
 .main-nav {
@@ -67,8 +68,6 @@ body {
     align-items: center;
     gap: 30px;
     height: 50px;
-    flex-grow: 1;
-    min-width: 0;
 }
 .nav-links-wrapper {
     display: flex;
@@ -92,7 +91,7 @@ body {
     border-bottom-color: #ffffff; 
 }
 .nav-arrows-container {
-    display: none; /* Escondido por padrão (desktop) */
+    display: none; /* ESCONDIDO NO DESKTOP POR PADRÃO */
 }
 .nav-arrow {
     background: rgba(0,0,0,0.15);
@@ -109,7 +108,7 @@ body {
     background: rgba(0,0,0,0.3);
 }
 .hidden {
-    display: none !important; /* Usar !important para garantir a sobreposição */
+    display: none !important;
 }
 
 
@@ -298,14 +297,15 @@ body {
     .secondary-nav-container {
         top: 120px; 
         padding: 0;
+        justify-content: flex-start; /* Alinha tudo à esquerda no mobile */
     }
     .nav-arrows-container {
-        display: flex;
+        display: flex; /* TORNA AS SETAS VISÍVEIS NO MOBILE */
         flex-direction: column;
-        align-self: stretch; /* Faz o container esticar na altura */
+        align-self: stretch;
     }
     .nav-arrow {
-        flex-grow: 1; /* Faz os botões dividirem a altura */
+        flex-grow: 1;
         width: 35px;
     }
     #nav-prev {
@@ -315,6 +315,8 @@ body {
         overflow: hidden;
         justify-content: flex-start;
         gap: 0;
+        flex-grow: 1; /* Faz o menu ocupar o espaço restante */
+        min-width: 0; /* Corrige bug de flexbox */
     }
     .nav-links-wrapper {
         padding: 0 15px;
