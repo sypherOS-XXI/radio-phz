@@ -31,13 +31,13 @@ body {
     z-index: 1000;
     box-sizing: border-box;
 }
-.radio-info { display: flex; align-items: center; }
-.radio-logo { width: 50px; height: 50px; margin-right: 15px; border-radius: 8px; }
-.radio-text { display: flex; flex-direction: column; }
+.radio-info { display: flex; align-items: center; min-width: 0; }
+.radio-logo { width: 50px; height: 50px; margin-right: 15px; border-radius: 8px; flex-shrink: 0; }
+.radio-text { display: flex; flex-direction: column; min-width: 0; }
 .radio-text .status { font-size: 0.75rem; font-weight: bold; color: #e53935; letter-spacing: 1px; text-transform: uppercase; }
-.radio-text .radio-name { font-size: 1rem; font-weight: bold; }
+.radio-text .radio-name { font-size: 1rem; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .player-controls { flex-grow: 1; display: flex; justify-content: center; }
-#play-pause-btn { background: #ffffff; border: none; border-radius: 50%; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: transform 0.2s ease, background-color 0.2s ease; }
+#play-pause-btn { background: #ffffff; border: none; border-radius: 50%; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: transform 0.2s ease, background-color 0.2s ease; flex-shrink: 0; }
 #play-pause-btn:hover { transform: scale(1.1); background-color: #f0f0f0; }
 #play-pause-btn svg { color: #18181b; }
 .volume-control { display: flex; align-items: center; }
@@ -57,8 +57,9 @@ body {
     background-color: #e53935; 
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     z-index: 999;
-    padding: 0 20px;
     box-sizing: border-box;
+    display: flex; /* Adicionado para alinhar setas e menu */
+    align-items: center;
 }
 .main-nav {
     display: flex;
@@ -66,6 +67,12 @@ body {
     align-items: center;
     gap: 30px;
     height: 50px;
+    flex-grow: 1; /* Permite que o menu ocupe o espaço disponível */
+    min-width: 0; /* Corrige bug de flexbox */
+}
+.nav-links-wrapper {
+    display: flex;
+    gap: 30px;
 }
 .nav-link {
     color: rgba(255, 255, 255, 0.8); 
@@ -75,6 +82,7 @@ body {
     padding: 10px 0;
     border-bottom: 3px solid transparent;
     transition: color 0.2s, border-bottom-color 0.2s;
+    white-space: nowrap; /* Impede que o texto do link quebre */
 }
 .nav-link:hover {
     color: #ffffff; 
@@ -83,6 +91,24 @@ body {
     color: #ffffff; 
     border-bottom-color: #ffffff; 
 }
+.nav-arrow {
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 0 15px;
+    height: 50px;
+    z-index: 10;
+}
+.nav-arrow:hover {
+    background: rgba(0,0,0,0.1);
+}
+.hidden {
+    display: none;
+}
+
 
 /* ================================== */
 /*       CONTEÚDO PRINCIPAL           */
@@ -109,7 +135,6 @@ body {
 .read-more:hover { color: #333; }
 .sidebar-widget { background-color: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08); margin-bottom: 20px; }
 .widget-title { font-size: 1.2rem; margin-top: 0; margin-bottom: 15px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-.schedule-list { list-style: none; padding: 0; margin: 0; line-height: 1.8; }
 .request-button { display: block; background-color: #e53935; color: #fff; text-align: center; padding: 15px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 1.1rem; transition: background-color 0.2s; }
 .request-button:hover { background-color: #c42d2a; }
 .request-button i { margin-right: 8px; }
@@ -117,47 +142,189 @@ body {
 .social-icons a { color: #333; font-size: 1.5rem; transition: color 0.2s, transform 0.2s; }
 .social-icons a:hover { color: #e53935; transform: scale(1.1); }
 .site-footer { background-color: #18181b; color: #a1a1aa; text-align: center; padding: 20px; margin-top: 40px; font-size: 0.9rem; }
+.social-icons-sidebar { display: flex; justify-content: space-around; gap: 10px; padding: 10px 0; }
+.social-icons-sidebar a { color: #333; font-size: 1.8rem; transition: color 0.2s, transform 0.2s; }
+.social-icons-sidebar a:hover { color: #e53935; transform: scale(1.1); }
+
+/* ================================== */
+/*        ESTILOS DA PROGRAMAÇÃO      */
+/* ================================== */
+.schedule-table-wrapper {
+    overflow-x: auto;
+    background: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+.schedule-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 700px;
+}
+.schedule-table th, .schedule-table td {
+    padding: 15px;
+    border: 1px solid #e0e0e0;
+    vertical-align: middle;
+}
+.schedule-table thead th {
+    background-color: #f7f7f7;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+}
+.schedule-table tbody th {
+    background-color: #f7f7f7;
+    font-weight: bold;
+    color: #e53935;
+    width: 120px;
+    text-align: center;
+}
+.program-info {
+    text-align: center;
+}
+.program-info h4 {
+    margin: 0 0 5px 0;
+    font-size: 1rem;
+    color: #222;
+}
+.program-info p {
+    margin: 0;
+    color: #666;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+.program-cell {
+    background-color: #fff;
+    transition: background-color 0.2s;
+    text-align: center;
+}
+.program-cell:hover {
+    background-color: #fdf2f2;
+}
 
 /* ================================== */
 /*          RESPONSIVIDADE            */
 /* ================================== */
 @media (max-width: 800px) {
-    /* CORREÇÃO: A linha que escondia o menu foi removida daqui. */
     .main-layout {
         flex-direction: column;
     }
     .sidebar {
         width: 100%;
     }
+
+    .schedule-table-wrapper {
+        padding: 0;
+        box-shadow: none;
+        background: transparent;
+    }
+    .schedule-table {
+        min-width: 100%;
+        border: 0;
+    }
+    .schedule-table thead {
+        border: none;
+        clip: rect(0 0 0 0);
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        padding: 0;
+        position: absolute;
+        width: 1px;
+    }
+    .schedule-table tr {
+        display: block;
+        margin-bottom: 1rem;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        background: #fff;
+    }
+    .schedule-table td {
+        display: block;
+        text-align: right;
+        border-bottom: 1px solid #eee;
+        padding-left: 50%;
+        position: relative;
+    }
+    .schedule-table td:last-child {
+        border-bottom: 0;
+    }
+    .schedule-table td:before {
+        content: attr(data-day);
+        position: absolute;
+        left: 15px;
+        width: 45%;
+        padding-right: 10px;
+        text-align: left;
+        font-weight: bold;
+        color: #333;
+    }
+    .schedule-table tbody th {
+        display: block;
+        width: 100%;
+        text-align: center;
+        background-color: #e53935;
+        color: #fff;
+        font-size: 1.1rem;
+    }
+    .program-info {
+        text-align: right;
+    }
 }
+
 
 @media (max-width: 600px) {
     body { 
-        padding-top: 170px; /* Espaço para player (120px) + menu (50px) */
+        padding-top: 170px; 
     }
-
-    #radio-player-container { 
-        flex-wrap: wrap; 
-        padding: 10px; 
-        height: auto; 
+    #radio-player-container {
+        flex-wrap: wrap;
+        height: auto;
+        padding: 10px 15px;
+        row-gap: 10px;
     }
-    .radio-info { flex-grow: 1; }
+    .player-controls {
+        order: 3;
+        width: 100%;
+        flex-grow: 0;
+    }
     .radio-logo { width: 40px; height: 40px; margin-right: 10px; }
     .radio-text .radio-name { font-size: 0.9rem; }
-    .player-controls { order: 3; width: 100%; margin-top: 10px; justify-content: center; }
-    .volume-control { justify-content: flex-end; }
     #volume-slider { width: 80px; }
-
     .secondary-nav-container {
-        top: 120px; /* Reposiciona o menu para baixo do player maior */
+        top: 120px; 
     }
-    
-    /* Para telas ainda menores, reduz o espaçamento dos links do menu */
     .main-nav {
-        gap: 15px;
-        justify-content: space-around; /* Distribui melhor os links */
+        overflow: hidden; /* Esconde os links que saem da tela */
+        justify-content: flex-start; /* Alinha os links à esquerda */
+        padding: 0;
+        gap: 0; /* O gap será no wrapper */
     }
-    .nav-link {
-        font-size: 0.9rem;
+    .nav-links-wrapper {
+        padding: 0 15px; /* Espaçamento interno para os links não colarem nas bordas */
+        transition: transform 0.3s ease-in-out;
+    }
+    .nav-link { 
+        font-size: 0.9rem; 
+        flex-shrink: 0; /* Impede que os links encolham */
+    }
+}
+
+@media (max-width: 380px) {
+    #radio-player-container {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    .radio-logo {
+        width: 35px;
+        height: 35px;
+        margin-right: 8px;
+    }
+    .volume-control svg {
+        margin-right: 5px;
+    }
+    #volume-slider {
+        width: 60px;
     }
 }
