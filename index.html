@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -26,23 +26,28 @@
         </div>
         
         <div class="player-controls">
-            <button id="play-pause-btn" aria-label="Tocar ou Pausar"><svg id="play-icon" xmlns="http://www.w3.org/2000/svg" viewBox="-2 -2 28 28" fill="currentColor" width="32px" height="32px"><path d="M8 5v14l11-7z"></path></svg><svg id="pause-icon" xmlns="http://www.w3.org/2000/svg" viewBox="-2 -2 28 28" fill="currentColor" width="32px" height="32px" style="display: none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg></button>
+            <button id="play-pause-btn" aria-label="Tocar ou Pausar"><svg id="play-icon" xmlns="http://www.w.org/2000/svg" viewBox="-2 -2 28 28" fill="currentColor" width="32px" height="32px"><path d="M8 5v14l11-7z"></path></svg><svg id="pause-icon" xmlns="http://www.w.org/2000/svg" viewBox="-2 -2 28 28" fill="currentColor" width="32px" height="32px" style="display: none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg></button>
         </div>
 
         <div class="volume-control">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24px" height="24px"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"></path></svg>
+            <svg xmlns="http://www.w.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24px" height="24px"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"></path></svg>
             <input type="range" id="volume-slider" min="0" max="1" step="0.05" value="1" aria-label="Controle de volume">
         </div>
     </div>
 
     <!-- BARRA DE NAVEGAÇÃO HORIZONTAL FIXA -->
     <div class="secondary-nav-container">
+        <button id="nav-prev" class="nav-arrow hidden">&lt;</button>
         <nav class="main-nav">
-            <a href="#" class="nav-link active" data-page="inicio">Início</a>
-            <a href="#" class="nav-link" data-page="sobre">Sobre Nós</a>
-            <a href="#" class="nav-link" data-page="anuncie">Anuncie</a>
-            <a href="#" class="nav-link" data-page="contato">Contato</a>
+            <div class="nav-links-wrapper">
+                <a href="#" class="nav-link active" data-page="inicio">Início</a>
+                <a href="#" class="nav-link" data-page="sobre">Sobre Nós</a>
+                <a href="#" class="nav-link" data-page="programacao">Programação</a>
+                <a href="#" class="nav-link" data-page="anuncie">Anuncie</a>
+                <a href="#" class="nav-link" data-page="contato">Contato</a>
+            </div>
         </nav>
+        <button id="nav-next" class="nav-arrow hidden">&gt;</button>
     </div>
 
 
@@ -68,12 +73,13 @@
                 </section>
                 <aside class="sidebar">
                     <div class="sidebar-widget">
-                        <h3 class="widget-title">Programação do Dia</h3>
-                        <ul class="schedule-list">
-                            <li><strong>08:00</strong> - Manhã Sertaneja</li>
-                            <li><strong>12:00</strong> - Pop Hits</li>
-                            <li><strong>16:00</strong> - Clássicos do Rock</li>
-                        </ul>
+                        <h3 class="widget-title">Siga-nos</h3>
+                        <div class="social-icons-sidebar">
+                            <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                            <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                        </div>
                     </div>
                     <div class="sidebar-widget">
                         <a href="https://wa.me/5511999999999?text=Olá!%20Gostaria%20de%20pedir%20uma%20música!" class="request-button" target="_blank" rel="noopener noreferrer">
@@ -94,6 +100,140 @@
                 <p>Somos formados por uma equipe de locutores, produtores e entusiastas da música dedicados a fazer da PHZ Music a sua rádio preferida. Conheça quem faz a mágica acontecer nos bastidores e no ar!</p>
             </div>
         </div>
+        
+        <!-- PÁGINA: PROGRAMAÇÃO -->
+        <div id="programacao" class="page-content">
+            <h2 class="section-title">Grade Semanal</h2>
+            <div class="schedule-table-wrapper">
+                <table class="schedule-table">
+                    <thead>
+                        <tr>
+                            <th>Horário</th>
+                            <th>Segunda</th>
+                            <th>Terça</th>
+                            <th>Quarta</th>
+                            <th>Quinta</th>
+                            <th>Sexta</th>
+                            <th>Sábado</th>
+                            <th>Domingo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row" rowspan="2">08:00 - 12:00</th>
+                            <td data-day="Segunda" class="program-cell" rowspan="2">
+                                <div class="program-info"><h4>Manhã Sertaneja</h4><p>Os maiores sucessos do sertanejo.</p></div>
+                            </td>
+                            <td data-day="Terça" class="program-cell" rowspan="2">
+                                 <div class="program-info"><h4>Manhã Sertaneja</h4><p>Os maiores sucessos do sertanejo.</p></div>
+                            </td>
+                            <td data-day="Quarta" class="program-cell" rowspan="2">
+                                <div class="program-info"><h4>Manhã Sertaneja</h4><p>Os maiores sucessos do sertanejo.</p></div>
+                            </td>
+                            <td data-day="Quinta" class="program-cell" rowspan="2">
+                                <div class="program-info"><h4>Manhã Sertaneja</h4><p>Os maiores sucessos do sertanejo.</p></div>
+                            </td>
+                             <td data-day="Sexta" class="program-cell" rowspan="2">
+                                <div class="program-info"><h4>Manhã Sertaneja</h4><p>Os maiores sucessos do sertanejo.</p></div>
+                            </td>
+                            <td data-day="Sábado" class="program-cell">
+                                <div class="program-info"><h4>Top Hits da Semana</h4><p>As mais pedidas da semana.</p></div>
+                            </td>
+                            <td data-day="Domingo" class="program-cell">
+                                <div class="program-info"><h4>Especial de Domingo</h4><p>Programas temáticos e especiais.</p></div>
+                            </td>
+                        </tr>
+                         <tr>
+                            <!-- O <th> de horário para esta linha foi removido, pois o anterior tem rowspan="2" -->
+                            <!-- Células de Seg a Sex já estão ocupadas pelo rowspan da linha anterior -->
+                            <td data-day="Sábado" class="program-cell">
+                                <div class="program-info"><h4>Sabadão Sertanejo</h4><p>O melhor do modão e do universitário.</p></div>
+                            </td>
+                            <td data-day="Domingo" class="program-cell">
+                                <div class="program-info"><h4>Clássicos da MPB</h4><p>Grandes nomes da música brasileira.</p></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row" rowspan="2">12:00 - 16:00</th>
+                            <td data-day="Segunda" class="program-cell" rowspan="2">
+                                <div class="program-info"><h4>Pop Hits</h4><p>O que está bombando no mundo pop.</p></div>
+                            </td>
+                             <td data-day="Terça" class="program-cell" rowspan="2">
+                                <div class="program-info"><h4>Tarde de Pagode</h4><p>O melhor do pagode 90 e atual.</p></div>
+                            </td>
+                            <td data-day="Quarta" class="program-cell" rowspan="2">
+                                <div class="program-info"><h4>Pop Hits</h4><p>O que está bombando no mundo pop.</p></div>
+                            </td>
+                             <td data-day="Quinta" class="program-cell" rowspan="2">
+                                <div class="program-info"><h4>Tarde de Pagode</h4><p>O melhor do pagode 90 e atual.</p></div>
+                            </td>
+                            <td data-day="Sexta" class="program-cell" rowspan="2">
+                                <div class="program-info"><h4>Sextou com Pop</h4><p>Esquenta para o fim de semana.</p></div>
+                            </td>
+                            <td data-day="Sábado" class="program-cell" rowspan="2">
+                                <div class="program-info"><h4>Mix Total</h4><p>Uma mistura de todos os ritmos.</p></div>
+                            </td>
+                            <td data-day="Domingo" class="program-cell" rowspan="2">
+                                <div class="program-info"><h4>Domingo Relax</h4><p>Músicas calmas para relaxar.</p></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <!-- O <th> de horário para esta linha foi removido, pois o anterior tem rowspan="2" -->
+                            <!-- Células de Seg a Dom já estão ocupadas pelo rowspan da linha anterior -->
+                        </tr>
+                        <tr>
+                            <th scope="row">16:00 - 19:00</th>
+                            <td data-day="Segunda" class="program-cell">
+                                <div class="program-info"><h4>Clássicos do Rock</h4><p>Hinos que marcaram a história.</p></div>
+                            </td>
+                             <td data-day="Terça" class="program-cell">
+                                <div class="program-info"><h4>Flashback</h4><p>Sucessos dos anos 80 e 90.</p></div>
+                            </td>
+                            <td data-day="Quarta" class="program-cell">
+                                <div class="program-info"><h4>Clássicos do Rock</h4><p>Hinos que marcaram a história.</p></div>
+                            </td>
+                             <td data-day="Quinta" class="program-cell">
+                                <div class="program-info"><h4>Flashback</h4><p>Sucessos dos anos 80 e 90.</p></div>
+                            </td>
+                            <td data-day="Sexta" class="program-cell">
+                                <div class="program-info"><h4>Esquenta Sertanejo</h4><p>O melhor do sertanejo para a noite.</p></div>
+                            </td>
+                             <td data-day="Sábado" class="program-cell">
+                                <div class="program-info"><h4>Rock Party</h4><p>O melhor do rock para agitar.</p></div>
+                            </td>
+                            <td data-day="Domingo" class="program-cell">
+                                <div class="program-info"><h4>Fim de Tarde</h4><p>Trilha sonora para o pôr do sol.</p></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">20:00 - 00:00</th>
+                            <td data-day="Segunda" class="program-cell">
+                                <div class="program-info"><h4>Noite Eletrônica</h4><p>Batidas envolventes para a sua noite.</p></div>
+                            </td>
+                            <td data-day="Terça" class="program-cell">
+                                <div class="program-info"><h4>Noite Eletrônica</h4><p>Batidas envolventes para a sua noite.</p></div>
+                            </td>
+                            <td data-day="Quarta" class="program-cell">
+                                <div class="program-info"><h4>Noite Eletrônica</h4><p>Batidas envolventes para a sua noite.</p></div>
+                            </td>
+                            <td data-day="Quinta" class="program-cell">
+                                <div class="program-info"><h4>Noite Eletrônica</h4><p>Batidas envolventes para a sua noite.</p></div>
+                            </td>
+                            <td data-day="Sexta" class="program-cell">
+                                <div class="program-info"><h4>Noite Eletrônica</h4><p>Batidas envolventes para a sua noite.</p></div>
+                            </td>
+                            <td data-day="Sábado" class="program-cell">
+                                <div class="program-info"><h4>Balada PHZ</h4><p>A sua festa de sábado à noite.</p></div>
+                            </td>
+                             <td data-day="Domingo" class="program-cell">
+                                <div class="program-info"><h4>Love Songs</h4><p>Músicas para corações apaixonados.</p></div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
 
         <!-- PÁGINA: ANUNCIE -->
         <div id="anuncie" class="page-content">
@@ -137,5 +277,3 @@
     <script src="script.js"></script>
 </body>
 </html>
-
-
