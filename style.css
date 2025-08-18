@@ -7,10 +7,7 @@ body {
     font-family: 'Inter', sans-serif;
     background-color: #f4f4f9;
     color: #333;
-    /* Espaço para player (74px) + menu (50px) */
     padding-top: 124px; 
-    
-    /* ADICIONADO: Inicia o layout flexível para o "sticky footer" */
     display: flex;
     flex-direction: column;
     min-height: 100vh;
@@ -87,7 +84,6 @@ body {
     border-bottom-color: #ffffff; 
 }
 
-
 /* ================================== */
 /*       CONTEÚDO PRINCIPAL           */
 /* ================================== */
@@ -95,7 +91,6 @@ body {
     max-width: 1100px;
     margin: 40px auto;
     padding: 0 20px;
-    /* ADICIONADO: Faz o conteúdo principal crescer para empurrar o rodapé */
     flex: 1;
 }
 .page-content { display: none; }
@@ -127,19 +122,42 @@ body {
 /*          RESPONSIVIDADE            */
 /* ================================== */
 @media (max-width: 800px) {
-    .secondary-nav-container { display: none; }
-    body { padding-top: 74px; } 
-    .main-layout { flex-direction: column; }
-    .sidebar { width: 100%; }
+    /* CORREÇÃO: A linha que escondia o menu foi removida daqui. */
+    .main-layout {
+        flex-direction: column;
+    }
+    .sidebar {
+        width: 100%;
+    }
 }
 
 @media (max-width: 600px) {
-    body { padding-top: 120px; }
-    #radio-player-container { flex-wrap: wrap; padding: 10px; height: auto; }
+    body { 
+        padding-top: 170px; /* Espaço para player (120px) + menu (50px) */
+    }
+
+    #radio-player-container { 
+        flex-wrap: wrap; 
+        padding: 10px; 
+        height: auto; 
+    }
     .radio-info { flex-grow: 1; }
     .radio-logo { width: 40px; height: 40px; margin-right: 10px; }
     .radio-text .radio-name { font-size: 0.9rem; }
     .player-controls { order: 3; width: 100%; margin-top: 10px; justify-content: center; }
     .volume-control { justify-content: flex-end; }
     #volume-slider { width: 80px; }
+
+    .secondary-nav-container {
+        top: 120px; /* Reposiciona o menu para baixo do player maior */
+    }
+    
+    /* Para telas ainda menores, reduz o espaçamento dos links do menu */
+    .main-nav {
+        gap: 15px;
+        justify-content: space-around; /* Distribui melhor os links */
+    }
+    .nav-link {
+        font-size: 0.9rem;
+    }
 }
