@@ -58,7 +58,7 @@ body {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     z-index: 999;
     box-sizing: border-box;
-    display: flex; /* Adicionado para alinhar setas e menu */
+    display: flex;
     align-items: center;
 }
 .main-nav {
@@ -67,8 +67,8 @@ body {
     align-items: center;
     gap: 30px;
     height: 50px;
-    flex-grow: 1; /* Permite que o menu ocupe o espaço disponível */
-    min-width: 0; /* Corrige bug de flexbox */
+    flex-grow: 1;
+    min-width: 0;
 }
 .nav-links-wrapper {
     display: flex;
@@ -82,7 +82,7 @@ body {
     padding: 10px 0;
     border-bottom: 3px solid transparent;
     transition: color 0.2s, border-bottom-color 0.2s;
-    white-space: nowrap; /* Impede que o texto do link quebre */
+    white-space: nowrap;
 }
 .nav-link:hover {
     color: #ffffff; 
@@ -91,22 +91,25 @@ body {
     color: #ffffff; 
     border-bottom-color: #ffffff; 
 }
+.nav-arrows-container {
+    display: none; /* Escondido por padrão (desktop) */
+}
 .nav-arrow {
-    background: transparent;
+    background: rgba(0,0,0,0.15);
     border: none;
     color: #fff;
-    font-size: 1.5rem;
-    font-weight: bold;
     cursor: pointer;
-    padding: 0 15px;
-    height: 50px;
-    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    transition: background-color 0.2s;
 }
 .nav-arrow:hover {
-    background: rgba(0,0,0,0.1);
+    background: rgba(0,0,0,0.3);
 }
 .hidden {
-    display: none;
+    display: none !important; /* Usar !important para garantir a sobreposição */
 }
 
 
@@ -294,20 +297,32 @@ body {
     #volume-slider { width: 80px; }
     .secondary-nav-container {
         top: 120px; 
+        padding: 0;
+    }
+    .nav-arrows-container {
+        display: flex;
+        flex-direction: column;
+        align-self: stretch; /* Faz o container esticar na altura */
+    }
+    .nav-arrow {
+        flex-grow: 1; /* Faz os botões dividirem a altura */
+        width: 35px;
+    }
+    #nav-prev {
+        border-bottom: 1px solid rgba(255,255,255,0.2);
     }
     .main-nav {
-        overflow: hidden; /* Esconde os links que saem da tela */
-        justify-content: flex-start; /* Alinha os links à esquerda */
-        padding: 0;
-        gap: 0; /* O gap será no wrapper */
+        overflow: hidden;
+        justify-content: flex-start;
+        gap: 0;
     }
     .nav-links-wrapper {
-        padding: 0 15px; /* Espaçamento interno para os links não colarem nas bordas */
+        padding: 0 15px;
         transition: transform 0.3s ease-in-out;
     }
     .nav-link { 
         font-size: 0.9rem; 
-        flex-shrink: 0; /* Impede que os links encolham */
+        flex-shrink: 0;
     }
 }
 
