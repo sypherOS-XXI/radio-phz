@@ -123,10 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         window.scrollTo({ top: 0, behavior: 'smooth' });
     });
-
-    const initialActiveLink = document.querySelector('.nav-link.active');
-    setTimeout(() => movePill(initialActiveLink), 50);
-
+    
     // --- LÓGICA DO MENU HORIZONTAL SCROLLÁVEL ---
     const navPrev = document.getElementById('nav-prev');
     const navNext = document.getElementById('nav-next');
@@ -165,10 +162,19 @@ document.addEventListener('DOMContentLoaded', () => {
         checkNavOverflow();
     });
 
-    // --- VERIFICAÇÕES DE REDIMENSIONAMENTO ---
-    window.addEventListener('resize', () => {
+    // --- INICIALIZAÇÃO E VERIFICAÇÕES DE LAYOUT ---
+
+    // MODIFICADO: Agrupamos as funções que dependem do layout final (fontes carregadas)
+    // dentro do evento 'load' para garantir que as dimensões estejam corretas.
+    window.addEventListener('load', () => {
+        const initialActiveLink = document.querySelector('.nav-link.active');
+        movePill(initialActiveLink);
         checkNavOverflow();
-        movePill(document.querySelector('.nav-link.active'));
+
+        // Reposiciona a pílula e checa o overflow ao redimensionar a janela
+        window.addEventListener('resize', () => {
+            checkNavOverflow();
+            movePill(document.querySelector('.nav-link.active'));
+        });
     });
-    checkNavOverflow();
 });
