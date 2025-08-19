@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -18,19 +18,19 @@
         <audio id="audio-stream" src="https://stream.zeno.fm/41virxfygt0uv"></audio>
         
         <div class="radio-info">
-            <img src="https://raw.githubusercontent.com/sypherOS-XXI/PHZ-MUSIC/main/phz%20perfil.jpg" alt="Logo da Rádio PHZ MUSIC" class="radio-logo">
+            <img src="https://raw.githubusercontent.com/sypherOS-XXI/PHZ-MUSIC/main/phz%20perfil.jpg" alt="Capa do Álbum" class="radio-logo" id="album-art">
             <div class="radio-text">
-                <span class="status">AO VIVO</span>
-                <span class="radio-name">PHZ Music</span>
+                <span id="song-title">PHZ Music</span>
+                <span id="artist-name">Sua rádio, seu hit!</span>
             </div>
         </div>
         
         <div class="player-controls">
-            <button id="play-pause-btn" aria-label="Tocar ou Pausar"><svg id="play-icon" xmlns="http://www.w.org/2000/svg" viewBox="-2 -2 28 28" fill="currentColor" width="32px" height="32px"><path d="M8 5v14l11-7z"></path></svg><svg id="pause-icon" xmlns="http://www.w.org/2000/svg" viewBox="-2 -2 28 28" fill="currentColor" width="32px" height="32px" style="display: none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg></button>
+            <button id="play-pause-btn" aria-label="Tocar ou Pausar"><svg id="play-icon" xmlns="http://www.w3.org/2000/svg" viewBox="-2 -2 28 28" fill="currentColor" width="32px" height="32px"><path d="M8 5v14l11-7z"></path></svg><svg id="pause-icon" xmlns="http://www.w3.org/2000/svg" viewBox="-2 -2 28 28" fill="currentColor" width="32px" height="32px" style="display: none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg></button>
         </div>
 
         <div class="volume-control">
-            <svg xmlns="http://www.w.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24px" height="24px"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"></path></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24px" height="24px"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"></path></svg>
             <input type="range" id="volume-slider" min="0" max="1" step="0.05" value="1" aria-label="Controle de volume">
         </div>
     </div>
@@ -43,15 +43,17 @@
         </div>
         <nav class="main-nav">
             <div class="nav-links-wrapper">
+                <!-- Elemento para a pílula deslizante -->
+                <div class="nav-pill"></div>
                 <a href="#" class="nav-link active" data-page="inicio">Início</a>
                 <a href="#" class="nav-link" data-page="sobre">Sobre Nós</a>
                 <a href="#" class="nav-link" data-page="programacao">Programação</a>
+                <a href="#" class="nav-link" data-page="phztv">PHZ TV</a>
                 <a href="#" class="nav-link" data-page="anuncie">Anuncie</a>
                 <a href="#" class="nav-link" data-page="contato">Contato</a>
             </div>
         </nav>
     </div>
-
 
     <!-- CONTEÚDO PRINCIPAL DA PÁGINA -->
     <main class="content">
@@ -70,7 +72,7 @@
                         <img src="https://github.com/sypherOS-XXI/PHZ-MUSIC/blob/main/phz%20banner.jpg?raw=true" alt="Banner PHZ Music">
                         <h3>Site em construção. Aguarde novidades!</h3>
                         <p>Estamos trabalhando para trazer o melhor da música e do entretenimento. Aguarde novidades!</p>
-                        <a href="#" class="read-more">Leia Mais &rarr;</a>
+                        <a href="#" class="read-more" id="read-more-construcao" data-page="noticia-construcao">Leia Mais &rarr;</a>
                     </article>
                 </section>
                 <aside class="sidebar">
@@ -79,7 +81,6 @@
                         <div class="social-icons-sidebar">
                             <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
                             <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
                             <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
                         </div>
                     </div>
@@ -106,136 +107,19 @@
         <!-- PÁGINA: PROGRAMAÇÃO -->
         <div id="programacao" class="page-content">
             <h2 class="section-title">Grade Semanal</h2>
-            <div class="schedule-table-wrapper">
-                <table class="schedule-table">
-                    <thead>
-                        <tr>
-                            <th>Horário</th>
-                            <th>Segunda</th>
-                            <th>Terça</th>
-                            <th>Quarta</th>
-                            <th>Quinta</th>
-                            <th>Sexta</th>
-                            <th>Sábado</th>
-                            <th>Domingo</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th scope="row" rowspan="2">08:00 - 12:00</th>
-                            <td data-day="Segunda" class="program-cell" rowspan="2">
-                                <div class="program-info"><h4>Manhã Sertaneja</h4><p>Os maiores sucessos do sertanejo.</p></div>
-                            </td>
-                            <td data-day="Terça" class="program-cell" rowspan="2">
-                                 <div class="program-info"><h4>Manhã Sertaneja</h4><p>Os maiores sucessos do sertanejo.</p></div>
-                            </td>
-                            <td data-day="Quarta" class="program-cell" rowspan="2">
-                                <div class="program-info"><h4>Manhã Sertaneja</h4><p>Os maiores sucessos do sertanejo.</p></div>
-                            </td>
-                            <td data-day="Quinta" class="program-cell" rowspan="2">
-                                <div class="program-info"><h4>Manhã Sertaneja</h4><p>Os maiores sucessos do sertanejo.</p></div>
-                            </td>
-                             <td data-day="Sexta" class="program-cell" rowspan="2">
-                                <div class="program-info"><h4>Manhã Sertaneja</h4><p>Os maiores sucessos do sertanejo.</p></div>
-                            </td>
-                            <td data-day="Sábado" class="program-cell">
-                                <div class="program-info"><h4>Top Hits da Semana</h4><p>As mais pedidas da semana.</p></div>
-                            </td>
-                            <td data-day="Domingo" class="program-cell">
-                                <div class="program-info"><h4>Especial de Domingo</h4><p>Programas temáticos e especiais.</p></div>
-                            </td>
-                        </tr>
-                         <tr>
-                            <!-- O <th> de horário para esta linha foi removido, pois o anterior tem rowspan="2" -->
-                            <!-- Células de Seg a Sex já estão ocupadas pelo rowspan da linha anterior -->
-                            <td data-day="Sábado" class="program-cell">
-                                <div class="program-info"><h4>Sabadão Sertanejo</h4><p>O melhor do modão e do universitário.</p></div>
-                            </td>
-                            <td data-day="Domingo" class="program-cell">
-                                <div class="program-info"><h4>Clássicos da MPB</h4><p>Grandes nomes da música brasileira.</p></div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row" rowspan="2">12:00 - 16:00</th>
-                            <td data-day="Segunda" class="program-cell" rowspan="2">
-                                <div class="program-info"><h4>Pop Hits</h4><p>O que está bombando no mundo pop.</p></div>
-                            </td>
-                             <td data-day="Terça" class="program-cell" rowspan="2">
-                                <div class="program-info"><h4>Tarde de Pagode</h4><p>O melhor do pagode 90 e atual.</p></div>
-                            </td>
-                            <td data-day="Quarta" class="program-cell" rowspan="2">
-                                <div class="program-info"><h4>Pop Hits</h4><p>O que está bombando no mundo pop.</p></div>
-                            </td>
-                             <td data-day="Quinta" class="program-cell" rowspan="2">
-                                <div class="program-info"><h4>Tarde de Pagode</h4><p>O melhor do pagode 90 e atual.</p></div>
-                            </td>
-                            <td data-day="Sexta" class="program-cell" rowspan="2">
-                                <div class="program-info"><h4>Sextou com Pop</h4><p>Esquenta para o fim de semana.</p></div>
-                            </td>
-                            <td data-day="Sábado" class="program-cell" rowspan="2">
-                                <div class="program-info"><h4>Mix Total</h4><p>Uma mistura de todos os ritmos.</p></div>
-                            </td>
-                            <td data-day="Domingo" class="program-cell" rowspan="2">
-                                <div class="program-info"><h4>Domingo Relax</h4><p>Músicas calmas para relaxar.</p></div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <!-- O <th> de horário para esta linha foi removido, pois o anterior tem rowspan="2" -->
-                            <!-- Células de Seg a Dom já estão ocupadas pelo rowspan da linha anterior -->
-                        </tr>
-                        <tr>
-                            <th scope="row">16:00 - 19:00</th>
-                            <td data-day="Segunda" class="program-cell">
-                                <div class="program-info"><h4>Clássicos do Rock</h4><p>Hinos que marcaram a história.</p></div>
-                            </td>
-                             <td data-day="Terça" class="program-cell">
-                                <div class="program-info"><h4>Flashback</h4><p>Sucessos dos anos 80 e 90.</p></div>
-                            </td>
-                            <td data-day="Quarta" class="program-cell">
-                                <div class="program-info"><h4>Clássicos do Rock</h4><p>Hinos que marcaram a história.</p></div>
-                            </td>
-                             <td data-day="Quinta" class="program-cell">
-                                <div class="program-info"><h4>Flashback</h4><p>Sucessos dos anos 80 e 90.</p></div>
-                            </td>
-                            <td data-day="Sexta" class="program-cell">
-                                <div class="program-info"><h4>Esquenta Sertanejo</h4><p>O melhor do sertanejo para a noite.</p></div>
-                            </td>
-                             <td data-day="Sábado" class="program-cell">
-                                <div class="program-info"><h4>Rock Party</h4><p>O melhor do rock para agitar.</p></div>
-                            </td>
-                            <td data-day="Domingo" class="program-cell">
-                                <div class="program-info"><h4>Fim de Tarde</h4><p>Trilha sonora para o pôr do sol.</p></div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">20:00 - 00:00</th>
-                            <td data-day="Segunda" class="program-cell">
-                                <div class="program-info"><h4>Noite Eletrônica</h4><p>Batidas envolventes para a sua noite.</p></div>
-                            </td>
-                            <td data-day="Terça" class="program-cell">
-                                <div class="program-info"><h4>Noite Eletrônica</h4><p>Batidas envolventes para a sua noite.</p></div>
-                            </td>
-                            <td data-day="Quarta" class="program-cell">
-                                <div class="program-info"><h4>Noite Eletrônica</h4><p>Batidas envolventes para a sua noite.</p></div>
-                            </td>
-                            <td data-day="Quinta" class="program-cell">
-                                <div class="program-info"><h4>Noite Eletrônica</h4><p>Batidas envolventes para a sua noite.</p></div>
-                            </td>
-                            <td data-day="Sexta" class="program-cell">
-                                <div class="program-info"><h4>Noite Eletrônica</h4><p>Batidas envolventes para a sua noite.</p></div>
-                            </td>
-                            <td data-day="Sábado" class="program-cell">
-                                <div class="program-info"><h4>Balada PHZ</h4><p>A sua festa de sábado à noite.</p></div>
-                            </td>
-                             <td data-day="Domingo" class="program-cell">
-                                <div class="program-info"><h4>Love Songs</h4><p>Músicas para corações apaixonados.</p></div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            <div class="schedule-table-wrapper"><table class="schedule-table"><thead><tr><th>Horário</th><th>Segunda</th><th>Terça</th><th>Quarta</th><th>Quinta</th><th>Sexta</th><th>Sábado</th><th>Domingo</th></tr></thead><tbody><tr><th scope="row" rowspan="2">08:00 - 12:00</th><td data-day="Segunda" class="program-cell" rowspan="2"><div class="program-info"><h4>Manhã Sertaneja</h4><p>Os maiores sucessos do sertanejo.</p></div></td><td data-day="Terça" class="program-cell" rowspan="2"><div class="program-info"><h4>Manhã Sertaneja</h4><p>Os maiores sucessos do sertanejo.</p></div></td><td data-day="Quarta" class="program-cell" rowspan="2"><div class="program-info"><h4>Manhã Sertaneja</h4><p>Os maiores sucessos do sertanejo.</p></div></td><td data-day="Quinta" class="program-cell" rowspan="2"><div class="program-info"><h4>Manhã Sertaneja</h4><p>Os maiores sucessos do sertanejo.</p></div></td><td data-day="Sexta" class="program-cell" rowspan="2"><div class="program-info"><h4>Manhã Sertaneja</h4><p>Os maiores sucessos do sertanejo.</p></div></td><td data-day="Sábado" class="program-cell"><div class="program-info"><h4>Top Hits da Semana</h4><p>As mais pedidas da semana.</p></div></td><td data-day="Domingo" class="program-cell"><div class="program-info"><h4>Especial de Domingo</h4><p>Programas temáticos e especiais.</p></div></td></tr><tr><td data-day="Sábado" class="program-cell"><div class="program-info"><h4>Sabadão Sertanejo</h4><p>O melhor do modão e do universitário.</p></div></td><td data-day="Domingo" class="program-cell"><div class="program-info"><h4>Clássicos da MPB</h4><p>Grandes nomes da música brasileira.</p></div></td></tr><tr><th scope="row" rowspan="2">12:00 - 16:00</th><td data-day="Segunda" class="program-cell" rowspan="2"><div class="program-info"><h4>Pop Hits</h4><p>O que está bombando no mundo pop.</p></div></td><td data-day="Terça" class="program-cell" rowspan="2"><div class="program-info"><h4>Tarde de Pagode</h4><p>O melhor do pagode 90 e atual.</p></div></td><td data-day="Quarta" class="program-cell" rowspan="2"><div class="program-info"><h4>Pop Hits</h4><p>O que está bombando no mundo pop.</p></div></td><td data-day="Quinta" class="program-cell" rowspan="2"><div class="program-info"><h4>Tarde de Pagode</h4><p>O melhor do pagode 90 e atual.</p></div></td><td data-day="Sexta" class="program-cell" rowspan="2"><div class="program-info"><h4>Sextou com Pop</h4><p>Esquenta para o fim de semana.</p></div></td><td data-day="Sábado" class="program-cell" rowspan="2"><div class="program-info"><h4>Mix Total</h4><p>Uma mistura de todos os ritmos.</p></div></td><td data-day="Domingo" class="program-cell" rowspan="2"><div class="program-info"><h4>Domingo Relax</h4><p>Músicas calmas para relaxar.</p></div></td></tr><tr></tr><tr><th scope="row">16:00 - 19:00</th><td data-day="Segunda" class="program-cell"><div class="program-info"><h4>Clássicos do Rock</h4><p>Hinos que marcaram a história.</p></div></td><td data-day="Terça" class="program-cell"><div class="program-info"><h4>Flashback</h4><p>Sucessos dos anos 80 e 90.</p></div></td><td data-day="Quarta" class="program-cell"><div class="program-info"><h4>Clássicos do Rock</h4><p>Hinos que marcaram a história.</p></div></td><td data-day="Quinta" class="program-cell"><div class="program-info"><h4>Flashback</h4><p>Sucessos dos anos 80 e 90.</p></div></td><td data-day="Sexta" class="program-cell"><div class="program-info"><h4>Esquenta Sertanejo</h4><p>O melhor do sertanejo para a noite.</p></div></td><td data-day="Sábado" class="program-cell"><div class="program-info"><h4>Rock Party</h4><p>O melhor do rock para agitar.</p></div></td><td data-day="Domingo" class="program-cell"><div class="program-info"><h4>Fim de Tarde</h4><p>Trilha sonora para o pôr do sol.</p></div></td></tr><tr><th scope="row">20:00 - 00:00</th><td data-day="Segunda" class="program-cell"><div class="program-info"><h4>Noite Eletrônica</h4><p>Batidas envolventes para a sua noite.</p></div></td><td data-day="Terça" class="program-cell"><div class="program-info"><h4>Noite Eletrônica</h4><p>Batidas envolventes para a sua noite.</p></div></td><td data-day="Quarta" class="program-cell"><div class="program-info"><h4>Noite Eletrônica</h4><p>Batidas envolventes para a sua noite.</p></div></td><td data-day="Quinta" class="program-cell"><div class="program-info"><h4>Noite Eletrônica</h4><p>Batidas envolventes para a sua noite.</p></div></td><td data-day="Sexta" class="program-cell"><div class="program-info"><h4>Noite Eletrônica</h4><p>Batidas envolventes para a sua noite.</p></div></td><td data-day="Sábado" class="program-cell"><div class="program-info"><h4>Balada PHZ</h4><p>A sua festa de sábado à noite.</p></div></td><td data-day="Domingo" class="program-cell"><div class="program-info"><h4>Love Songs</h4><p>Músicas para corações apaixonados.</p></div></td></tr></tbody></table></div>
         </div>
 
+        <!-- PÁGINA PHZ TV -->
+        <div id="phztv" class="page-content">
+            <h2 class="section-title">PHZ TV</h2>
+            <div class="post-card">
+                <img src="https://github.com/sypherOS-XXI/PHZ-MUSIC/blob/main/phz%20banner.jpg?raw=true" alt="Banner PHZ Music">
+                <h3>O Som Ganha Imagem. Em Breve.</h3>
+                <p>Estamos preparando um universo de entretenimento visual para você. A PHZ TV será o seu novo ponto de encontro com videoclipes, transmissões ao vivo, entrevistas exclusivas e conteúdos especiais que unem o melhor da música à imagem.</p>
+                <p>Nossa equipe está trabalhando intensamente para construir uma plataforma de alta qualidade. Em breve, a sua experiência com a PHZ Music será completa: som e imagem em perfeita sintonia. Fique ligado!</p>
+            </div>
+        </div>
 
         <!-- PÁGINA: ANUNCIE -->
         <div id="anuncie" class="page-content">
@@ -243,11 +127,7 @@
             <div class="post-card">
                 <h3>Por que anunciar na PHZ Music?</h3>
                 <p>Alcançar um público engajado e apaixonado por música nunca foi tão fácil. Oferecemos pacotes de publicidade flexíveis para atender às necessidades da sua marca, desde spots comerciais durante nossa programação até banners em nosso site.</p>
-                <ul>
-                    <li>Alta visibilidade para sua marca.</li>
-                    <li>Público segmentado e fiel.</li>
-                    <li>Formatos de anúncio criativos e eficazes.</li>
-                </ul>
+                <ul><li>Alta visibilidade para sua marca.</li><li>Público segmentado e fiel.</li><li>Formatos de anúncio criativos e eficazes.</li></ul>
                 <p>Entre em contato conosco pelo e-mail <strong>comercial@phzmusic.com</strong> e vamos encontrar a melhor solução para você!</p>
             </div>
         </div>
@@ -259,17 +139,27 @@
                 <h3>Estamos aqui para ouvir você!</h3>
                 <p>Tem alguma sugestão, dúvida ou quer apenas mandar um alô? Use um dos canais abaixo:</p>
                 <p><strong><i class="fab fa-whatsapp"></i> WhatsApp:</strong> <a href="https://wa.me/5511999999999?text=Olá!%20Entrei%20em%20contato%20pelo%20site."> (11) 99999-9999</a> (Pedidos de música)</p>
-                <p><strong><i class="fas fa-envelope"></i> E-mail:</strong> contato@phzmusic.com (Assuntos gerais)</p>
-                <br>
+                <p><strong><i class="fas fa-envelope"></i> E-mail:</strong> contato@phzmusic.com (Assuntos gerais)</p><br>
                 <h3>Nossas Redes Sociais</h3>
                 <div class="social-icons">
                     <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
                     <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
                     <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
                 </div>
             </div>
         </div>
+        
+        <!-- PÁGINA "OCULTA" PARA NOTÍCIA -->
+        <div id="noticia-construcao" class="page-content">
+            <h2 class="section-title">Nosso Novo Espaço Digital</h2>
+            <div class="post-card">
+                <img src="https://github.com/sypherOS-XXI/PHZ-MUSIC/blob/main/phz%20banner.jpg?raw=true" alt="Banner PHZ Music">
+                <h3>O Futuro da Rádio é Interativo</h3>
+                <p>Bem-vindo ao futuro da PHZ Music! Estamos em um processo de intensa construção para transformar nosso site em um ecossistema musical completo e interativo. Nosso objetivo é ir além da transmissão: queremos criar um espaço onde você possa não apenas ouvir, mas também interagir, descobrir e se conectar.</p>
+                <p>Com uma interface moderna, funcionalidades inovadoras e uma programação ainda mais diversificada e de alta qualidade, estamos comprometidos em oferecer a melhor experiência de rádio web do Brasil. Agradecemos sua paciência e mal podemos esperar para compartilhar todas as novidades com você. O futuro da música está sendo sintonizado aqui!</p>
+            </div>
+        </div>
+
     </main>
 
     <footer class="site-footer">
