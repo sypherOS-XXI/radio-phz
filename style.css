@@ -1,12 +1,32 @@
 /* ================================== */
-/*          ESTILOS GERAIS            */
+/*          CONFIGURAÇÕES GERAIS      */
 /* ================================== */
+:root {
+    --primary-color: #e53935;
+    --primary-gradient: linear-gradient(45deg, #e53935, #c62828);
+    --bg-color: #f4f4f9;
+    --player-bg: #18181b;
+    --nav-bg: #e53935;
+    --card-bg: #ffffff;
+    --text-color: #333;
+    --text-muted-color: #555;
+    --text-on-primary: #ffffff;
+    --text-on-player: #ffffff;
+    --border-color: #e0e0e0;
+    --shadow-color: rgba(0, 0, 0, 0.08);
+}
+
+/* Smooth Scroll */
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     margin: 0;
     padding: 0;
     font-family: 'Inter', sans-serif;
-    background-color: #f4f4f9;
-    color: #333;
+    background-color: var(--bg-color);
+    color: var(--text-color);
     padding-top: 124px; 
     display: flex;
     flex-direction: column;
@@ -21,30 +41,32 @@ body {
     top: 0;
     left: 0;
     width: 100%;
-    background: #18181b;
-    color: #ffffff;
+    background: var(--player-bg);
+    color: var(--text-on-player);
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 12px 20px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 12px var(--shadow-color);
     z-index: 1000;
     box-sizing: border-box;
 }
 .radio-info { display: flex; align-items: center; min-width: 0; }
-.radio-logo { width: 50px; height: 50px; margin-right: 15px; border-radius: 8px; flex-shrink: 0; }
-.radio-text { display: flex; flex-direction: column; min-width: 0; }
-.radio-text .status { font-size: 0.75rem; font-weight: bold; color: #e53935; letter-spacing: 1px; text-transform: uppercase; }
-.radio-text .radio-name { font-size: 1rem; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.radio-logo { width: 50px; height: 50px; margin-right: 15px; border-radius: 8px; flex-shrink: 0; object-fit: cover; transition: all 0.5s ease-in-out; }
+.radio-text { display: flex; flex-direction: column; justify-content: center; min-width: 0; }
+#song-title { font-size: 1rem; font-weight: bold; color: var(--text-on-player); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#artist-name { font-size: 0.85rem; color: #a1a1aa; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .player-controls { flex-grow: 1; display: flex; justify-content: center; }
 #play-pause-btn { background: #ffffff; border: none; border-radius: 50%; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: transform 0.2s ease, background-color 0.2s ease; flex-shrink: 0; }
 #play-pause-btn:hover { transform: scale(1.1); background-color: #f0f0f0; }
 #play-pause-btn svg { color: #18181b; }
+
 .volume-control { display: flex; align-items: center; }
-.volume-control svg { margin-right: 10px; }
+.volume-control svg { margin-right: 10px; color: var(--text-on-player); }
 #volume-slider { -webkit-appearance: none; appearance: none; width: 100px; height: 5px; background: #4d4d4d; border-radius: 5px; outline: none; cursor: pointer; }
 #volume-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 15px; height: 15px; background: #ffffff; border-radius: 50%; cursor: pointer; }
 #volume-slider::-moz-range-thumb { width: 15px; height: 15px; background: #ffffff; border-radius: 50%; cursor: pointer; border: none; }
+
 
 /* ================================== */
 /*     BARRA DE NAVEGAÇÃO SECUNDÁRIA    */
@@ -54,294 +76,172 @@ body {
     top: 74px; 
     left: 0;
     width: 100%;
-    background-color: #e53935; 
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    background-color: var(--nav-bg); 
+    box-shadow: 0 2px 5px var(--shadow-color);
     z-index: 999;
     box-sizing: border-box;
     display: flex;
-    justify-content: center; /* Centraliza o menu no desktop */
+    justify-content: center;
     align-items: center;
 }
 .main-nav {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 30px;
     height: 50px;
 }
 .nav-links-wrapper {
+    position: relative;
     display: flex;
     gap: 30px;
 }
 .nav-link {
-    color: rgba(255, 255, 255, 0.8); 
+    color: rgba(255, 255, 255, 0.7); 
     text-decoration: none;
     font-weight: bold;
     font-size: 1rem;
     padding: 10px 0;
-    border-bottom: 3px solid transparent;
-    transition: color 0.2s, border-bottom-color 0.2s;
+    border-bottom: none;
+    transition: color 0.2s;
     white-space: nowrap;
+    position: relative;
+    z-index: 2;
 }
-.nav-link:hover {
-    color: #ffffff; 
-}
-.nav-link.active {
-    color: #ffffff; 
-    border-bottom-color: #ffffff; 
-}
-.nav-arrows-container {
-    display: none; /* ESCONDIDO NO DESKTOP POR PADRÃO */
-}
-.nav-arrow {
-    background: rgba(0,0,0,0.15);
-    border: none;
-    color: #fff;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.8rem;
-    transition: background-color 0.2s;
-}
-.nav-arrow:hover {
-    background: rgba(0,0,0,0.3);
-}
-.hidden {
-    display: none !important;
+.nav-link:hover { color: #ffffff; }
+.nav-link.active { color: #ffffff; }
+
+/* Estilo da pílula deslizante */
+.nav-pill {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    height: 36px;
+    margin-top: -18px;
+    border-radius: 18px;
+    background: rgba(0,0,0,0.15); /* Cor sutil para a pílula */
+    z-index: 1;
+    transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
+.nav-arrows-container { display: none; }
+.nav-arrow { background: rgba(0,0,0,0.15); border: none; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; transition: background-color 0.2s; }
+.nav-arrow:hover { background: rgba(0,0,0,0.3); }
+.hidden { display: none !important; }
 
 /* ================================== */
 /*       CONTEÚDO PRINCIPAL           */
 /* ================================== */
-.content {
-    max-width: 1100px;
-    margin: 40px auto;
-    padding: 0 20px;
-    flex: 1;
-}
+.content { max-width: 1100px; margin: 40px auto; padding: 0 20px; flex: 1; }
 .page-content { display: none; }
-.page-content.active { display: block; }
+.page-content.active { display: block; animation: fadeIn 0.5s ease; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
 .banner-container { width: 100%; margin-bottom: 40px; text-align: center; }
-.banner-container img { max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); vertical-align: middle; }
+.banner-container img { max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 10px var(--shadow-color); vertical-align: middle; }
 .main-layout { display: flex; gap: 30px; }
 .main-column { flex: 1; min-width: 0; }
 .sidebar { width: 300px; flex-shrink: 0; }
-.section-title { font-size: 1.8rem; margin-bottom: 20px; border-bottom: 3px solid #e53935; padding-bottom: 10px; }
-.post-card { background-color: #ffffff; border-radius: 8px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08); margin-bottom: 30px; overflow: hidden; padding: 20px; }
+.section-title { font-size: 1.8rem; margin-bottom: 20px; border-bottom: 3px solid var(--primary-color); padding-bottom: 10px; }
+
+/* ATUALIZADO: Card sem estilos 3D */
+.post-card { 
+    background-color: var(--card-bg); 
+    border-radius: 12px; 
+    box-shadow: 0 4px 15px var(--shadow-color); 
+    margin-bottom: 30px; 
+    overflow: hidden; 
+    padding: 20px; /* Padding movido para cá */
+    transition: box-shadow 0.3s ease;
+}
+.post-card:hover {
+    box-shadow: 0 8px 30px var(--shadow-color);
+}
 .post-card img { width: 100%; height: auto; border-radius: 8px; margin-bottom: 15px; }
 .post-card h3 { margin-top: 0; font-size: 1.5rem; }
-.post-card p, .post-card li { line-height: 1.7; color: #555; }
-.read-more { display: inline-block; margin-top: 10px; color: #e53935; text-decoration: none; font-weight: bold; transition: color 0.2s; }
-.read-more:hover { color: #333; }
-.sidebar-widget { background-color: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08); margin-bottom: 20px; }
-.widget-title { font-size: 1.2rem; margin-top: 0; margin-bottom: 15px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-.request-button { display: block; background-color: #e53935; color: #fff; text-align: center; padding: 15px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 1.1rem; transition: background-color 0.2s; }
-.request-button:hover { background-color: #c42d2a; }
+.post-card p, .post-card li { line-height: 1.7; color: var(--text-muted-color); }
+.read-more { display: inline-block; margin-top: 10px; color: var(--primary-color); text-decoration: none; font-weight: bold; transition: color 0.2s; }
+.read-more:hover { color: var(--text-color); }
+.sidebar-widget { background-color: var(--card-bg); padding: 20px; border-radius: 8px; box-shadow: 0 4px 10px var(--shadow-color); margin-bottom: 20px; }
+.widget-title { font-size: 1.2rem; margin-top: 0; margin-bottom: 15px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px; }
+
+/* Botão com gradiente */
+.request-button { display: block; background: var(--primary-gradient); color: var(--text-on-primary); text-align: center; padding: 15px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 1.1rem; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.request-button:hover { transform: translateY(-2px); box-shadow: 0 6px 12px var(--shadow-color); }
 .request-button i { margin-right: 8px; }
+
 .social-icons { display: flex; justify-content: center; gap: 15px; }
-.social-icons a { color: #333; font-size: 1.5rem; transition: color 0.2s, transform 0.2s; }
-.social-icons a:hover { color: #e53935; transform: scale(1.1); }
+.social-icons a { color: var(--text-muted-color); font-size: 1.5rem; transition: color 0.2s, transform 0.2s; }
+.social-icons a:hover { color: var(--primary-color); transform: scale(1.1); }
 .site-footer { background-color: #18181b; color: #a1a1aa; text-align: center; padding: 20px; margin-top: 40px; font-size: 0.9rem; }
 .social-icons-sidebar { display: flex; justify-content: space-around; gap: 10px; padding: 10px 0; }
-.social-icons-sidebar a { color: #333; font-size: 1.8rem; transition: color 0.2s, transform 0.2s; }
-.social-icons-sidebar a:hover { color: #e53935; transform: scale(1.1); }
+.social-icons-sidebar a { color: var(--text-muted-color); font-size: 1.8rem; transition: color 0.2s, transform 0.2s; }
+.social-icons-sidebar a:hover { color: var(--primary-color); transform: scale(1.1); }
+
+/* Cor específica para o ícone do Facebook no hover */
+.social-icons a[aria-label="Facebook"]:hover,
+.social-icons-sidebar a[aria-label="Facebook"]:hover {
+    color: #1877F2;
+}
+
 
 /* ================================== */
 /*        ESTILOS DA PROGRAMAÇÃO      */
 /* ================================== */
 .schedule-table-wrapper {
     overflow-x: auto;
-    background: #fff;
+    background: var(--card-bg);
     padding: 10px;
     border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 10px var(--shadow-color);
 }
-.schedule-table {
-    width: 100%;
-    border-collapse: collapse;
-    min-width: 700px;
-}
-.schedule-table th, .schedule-table td {
-    padding: 15px;
-    border: 1px solid #e0e0e0;
-    vertical-align: middle;
-}
-.schedule-table thead th {
-    background-color: #f7f7f7;
-    font-weight: bold;
-    color: #333;
-    text-align: center;
-}
-.schedule-table tbody th {
-    background-color: #f7f7f7;
-    font-weight: bold;
-    color: #e53935;
-    width: 120px;
-    text-align: center;
-}
-.program-info {
-    text-align: center;
-}
-.program-info h4 {
-    margin: 0 0 5px 0;
-    font-size: 1rem;
-    color: #222;
-}
-.program-info p {
-    margin: 0;
-    color: #666;
-    font-size: 0.9rem;
-    line-height: 1.5;
-}
-.program-cell {
-    background-color: #fff;
-    transition: background-color 0.2s;
-    text-align: center;
-}
-.program-cell:hover {
-    background-color: #fdf2f2;
-}
+.schedule-table { width: 100%; border-collapse: collapse; min-width: 700px; }
+.schedule-table th, .schedule-table td { padding: 15px; border: 1px solid var(--border-color); vertical-align: middle; }
+.schedule-table thead th { background-color: #f7f7f7; font-weight: bold; color: var(--text-color); text-align: center; }
+.schedule-table tbody th { background-color: #f7f7f7; font-weight: bold; color: var(--primary-color); width: 120px; text-align: center; }
+.program-info { text-align: center; }
+.program-info h4 { margin: 0 0 5px 0; font-size: 1rem; color: var(--text-color); }
+.program-info p { margin: 0; color: var(--text-muted-color); font-size: 0.9rem; line-height: 1.5; }
+.program-cell { background-color: var(--card-bg); transition: background-color 0.2s; text-align: center; }
+.program-cell:hover { background-color: #fdf2f2; }
 
 /* ================================== */
 /*          RESPONSIVIDADE            */
 /* ================================== */
 @media (max-width: 800px) {
-    .main-layout {
-        flex-direction: column;
-    }
-    .sidebar {
-        width: 100%;
-    }
-
-    .schedule-table-wrapper {
-        padding: 0;
-        box-shadow: none;
-        background: transparent;
-    }
-    .schedule-table {
-        min-width: 100%;
-        border: 0;
-    }
-    .schedule-table thead {
-        border: none;
-        clip: rect(0 0 0 0);
-        height: 1px;
-        margin: -1px;
-        overflow: hidden;
-        padding: 0;
-        position: absolute;
-        width: 1px;
-    }
-    .schedule-table tr {
-        display: block;
-        margin-bottom: 1rem;
-        border-radius: 8px;
-        overflow: hidden;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        background: #fff;
-    }
-    .schedule-table td {
-        display: block;
-        text-align: right;
-        border-bottom: 1px solid #eee;
-        padding-left: 50%;
-        position: relative;
-    }
-    .schedule-table td:last-child {
-        border-bottom: 0;
-    }
-    .schedule-table td:before {
-        content: attr(data-day);
-        position: absolute;
-        left: 15px;
-        width: 45%;
-        padding-right: 10px;
-        text-align: left;
-        font-weight: bold;
-        color: #333;
-    }
-    .schedule-table tbody th {
-        display: block;
-        width: 100%;
-        text-align: center;
-        background-color: #e53935;
-        color: #fff;
-        font-size: 1.1rem;
-    }
-    .program-info {
-        text-align: right;
-    }
+    .main-layout { flex-direction: column; }
+    .sidebar { width: 100%; }
+    .schedule-table-wrapper { padding: 0; box-shadow: none; background: transparent; }
+    .schedule-table { min-width: 100%; border: 0; }
+    .schedule-table thead { border: none; clip: rect(0 0 0 0); height: 1px; margin: -1px; overflow: hidden; padding: 0; position: absolute; width: 1px; }
+    .schedule-table tr { display: block; margin-bottom: 1rem; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px var(--shadow-color); background: var(--card-bg); }
+    .schedule-table td { display: block; text-align: right; border-bottom: 1px solid var(--border-color); padding-left: 50%; position: relative; }
+    .schedule-table td:last-child { border-bottom: 0; }
+    .schedule-table td:before { content: attr(data-day); position: absolute; left: 15px; width: 45%; padding-right: 10px; text-align: left; font-weight: bold; color: var(--text-color); }
+    .schedule-table tbody th { display: block; width: 100%; text-align: center; background-color: var(--primary-color); color: var(--text-on-primary); font-size: 1.1rem; }
+    .program-info { text-align: right; }
 }
 
-
 @media (max-width: 600px) {
-    body { 
-        padding-top: 170px; 
-    }
-    #radio-player-container {
-        flex-wrap: wrap;
-        height: auto;
-        padding: 10px 15px;
-        row-gap: 10px;
-    }
-    .player-controls {
-        order: 3;
-        width: 100%;
-        flex-grow: 0;
-    }
+    body { padding-top: 170px; }
+    #radio-player-container { flex-wrap: wrap; height: auto; padding: 10px 15px; row-gap: 10px; justify-content: space-between; }
+    .player-controls { order: 3; width: 100%; flex-grow: 0; }
+    .radio-info { flex-grow: 1; }
     .radio-logo { width: 40px; height: 40px; margin-right: 10px; }
-    .radio-text .radio-name { font-size: 0.9rem; }
+    #song-title { font-size: 0.9rem; }
+    #artist-name { font-size: 0.8rem; }
     #volume-slider { width: 80px; }
-    .secondary-nav-container {
-        top: 120px; 
-        padding: 0;
-        justify-content: flex-start; /* Alinha tudo à esquerda no mobile */
-    }
-    .nav-arrows-container {
-        display: flex; /* TORNA AS SETAS VISÍVEIS NO MOBILE */
-        flex-direction: column;
-        align-self: stretch;
-    }
-    .nav-arrow {
-        flex-grow: 1;
-        width: 35px;
-    }
-    #nav-prev {
-        border-bottom: 1px solid rgba(255,255,255,0.2);
-    }
-    .main-nav {
-        overflow: hidden;
-        justify-content: flex-start;
-        gap: 0;
-        flex-grow: 1; /* Faz o menu ocupar o espaço restante */
-        min-width: 0; /* Corrige bug de flexbox */
-    }
-    .nav-links-wrapper {
-        padding: 0 15px;
-        transition: transform 0.3s ease-in-out;
-    }
-    .nav-link { 
-        font-size: 0.9rem; 
-        flex-shrink: 0;
-    }
+    .secondary-nav-container { top: 120px; padding: 0; justify-content: flex-start; }
+    .nav-arrows-container { display: flex; flex-direction: column; align-self: stretch; }
+    .nav-arrow { flex-grow: 1; width: 35px; }
+    #nav-prev { border-bottom: 1px solid rgba(255,255,255,0.2); }
+    .main-nav { overflow: hidden; justify-content: flex-start; gap: 0; flex-grow: 1; min-width: 0; }
+    .nav-links-wrapper { padding: 0 15px; transition: transform 0.3s ease-in-out; }
+    .nav-link { font-size: 0.9rem; flex-shrink: 0; }
 }
 
 @media (max-width: 380px) {
-    #radio-player-container {
-        padding-left: 10px;
-        padding-right: 10px;
-    }
-    .radio-logo {
-        width: 35px;
-        height: 35px;
-        margin-right: 8px;
-    }
-    .volume-control svg {
-        margin-right: 5px;
-    }
-    #volume-slider {
-        width: 60px;
-    }
+    #radio-player-container { padding-left: 10px; padding-right: 10px; }
+    .radio-logo { width: 35px; height: 35px; margin-right: 8px; }
+    .volume-control svg { margin-right: 5px; }
+    #volume-slider { width: 60px; }
 }
