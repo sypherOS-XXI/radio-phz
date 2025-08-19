@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         window.scrollTo({ top: 0, behavior: 'smooth' });
     });
-    
+
     // --- LÓGICA DO MENU HORIZONTAL SCROLLÁVEL ---
     const navPrev = document.getElementById('nav-prev');
     const navNext = document.getElementById('nav-next');
@@ -135,16 +135,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const checkNavOverflow = () => {
         if (!mainNav || !navLinksWrapper) return;
-        const maxScroll = navLinksWrapper.scrollWidth - mainNav.clientWidth;
-        if (maxScroll > 1) {
-            navPrev.classList.toggle('hidden', currentTranslateX === 0);
-            navNext.classList.toggle('hidden', Math.abs(currentTranslateX) >= maxScroll - 1);
-        } else {
-            navPrev.classList.add('hidden');
-            navNext.classList.add('hidden');
-            currentTranslateX = 0;
-            navLinksWrapper.style.transform = `translateX(0px)`;
-        }
+        // Adicionamos um pequeno delay para garantir que a renderização finalizou
+        setTimeout(() => {
+            const maxScroll = navLinksWrapper.scrollWidth - mainNav.clientWidth;
+            if (maxScroll > 1) {
+                navPrev.classList.toggle('hidden', currentTranslateX === 0);
+                navNext.classList.toggle('hidden', Math.abs(currentTranslateX) >= maxScroll - 1);
+            } else {
+                navPrev.classList.add('hidden');
+                navNext.classList.add('hidden');
+                currentTranslateX = 0;
+                navLinksWrapper.style.transform = `translateX(0px)`;
+            }
+        }, 100);
     };
 
     navNext.addEventListener('click', () => {
@@ -162,16 +165,20 @@ document.addEventListener('DOMContentLoaded', () => {
         checkNavOverflow();
     });
 
-    // --- INICIALIZAÇÃO E VERIFICAÇÕES DE LAYOUT ---
-
-    // MODIFICADO: Agrupamos as funções que dependem do layout final (fontes carregadas)
-    // dentro do evento 'load' para garantir que as dimensões estejam corretas.
-    window.addEventListener('load', () => {
+    // --- CORREÇÃO DEFINITIVA: INICIALIZAÇÃO DO MENU APÓS CARREGAMENTO DAS FONTES ---
+    // A API document.fonts.ready é uma Promise que resolve quando todas as fontes
+    // da página foram carregadas. Isso garante que os cálculos de dimensão
+    // (largura dos links) sejam feitos com a fonte final, e não uma fonte padrão.
+    document.fonts.ready.then(() => {
+        // Agora é seguro calcular o layout inicial do menu
         const initialActiveLink = document.querySelector('.nav-link.active');
-        movePill(initialActiveLink);
+        if (initialActiveLink) {
+            movePill(initialActiveLink);
+        }
         checkNavOverflow();
 
-        // Reposiciona a pílula e checa o overflow ao redimensionar a janela
+        // Anexar o listener de redimensionamento aqui também garante que ele
+        // funcione com as dimensões corretas desde o início.
         window.addEventListener('resize', () => {
             checkNavOverflow();
             movePill(document.querySelector('.nav-link.active'));
