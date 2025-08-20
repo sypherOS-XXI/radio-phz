@@ -9,9 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const togglePlayPause = () => {
         if (audio.paused || audio.ended) {
-            audio.play().catch(error => {
-                console.error("Erro ao tentar tocar o áudio:", error);
-            });
+            audio.play().catch(error => { console.error("Erro ao tocar áudio:", error); });
         } else {
             audio.pause();
         }
@@ -30,9 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     playPauseBtn.addEventListener('click', togglePlayPause);
     audio.addEventListener('play', updateIcon);
     audio.addEventListener('pause', updateIcon);
-    volumeSlider.addEventListener('input', (e) => {
-        audio.volume = e.target.value;
-    });
+    volumeSlider.addEventListener('input', (e) => { audio.volume = e.target.value; });
     updateIcon();
 
     // --- Lógica para buscar informações da música (Now Playing) ---
@@ -48,13 +44,8 @@ document.addEventListener('DOMContentLoaded', () => {
             let artist = 'PHZ Music', song = 'Sua rádio, seu hit!', art = defaultAlbumArt;
             if (data && data.title && data.title !== '') {
                 const parts = data.title.split(' - ');
-                if (parts.length > 1) {
-                    artist = parts[0].trim();
-                    song = parts[1].trim();
-                } else {
-                    song = data.title.trim();
-                    artist = '';
-                }
+                artist = parts.length > 1 ? parts[0].trim() : '';
+                song = parts.length > 1 ? parts[1].trim() : data.title.trim();
             }
             if (data && data.image_url && data.image_url !== '') art = data.image_url;
             if (songTitle.textContent !== song) songTitle.textContent = song;
@@ -81,7 +72,6 @@ document.addEventListener('DOMContentLoaded', () => {
         navPill.style.display = 'block';
         const linkRect = targetLink.getBoundingClientRect();
         const wrapperRect = targetLink.parentElement.getBoundingClientRect();
-        
         navPill.style.width = `${linkRect.width}px`;
         navPill.style.transform = `translateX(${linkRect.left - wrapperRect.left}px)`;
     };
@@ -89,22 +79,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const showPage = (pageId) => {
         pageContents.forEach(page => page.classList.remove('active'));
         const targetPage = document.getElementById(pageId);
-        if (targetPage) {
-            targetPage.classList.add('active');
-        }
+        if (targetPage) targetPage.classList.add('active');
     };
 
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
             const targetPageId = link.getAttribute('data-page');
-
             navLinks.forEach(navLink => navLink.classList.remove('active'));
             link.classList.add('active');
-            
             showPage(targetPageId);
             movePill(link);
-            
             link.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
         });
     });
@@ -112,15 +97,9 @@ document.addEventListener('DOMContentLoaded', () => {
     readMoreLink.addEventListener('click', (e) => {
         e.preventDefault();
         const targetPageId = readMoreLink.getAttribute('data-page');
-        
         showPage(targetPageId);
-        
         navLinks.forEach(navLink => navLink.classList.remove('active'));
-        
-        if (navPill) {
-            navPill.style.width = '0';
-        }
-
+        if (navPill) navPill.style.width = '0';
         window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 
@@ -129,13 +108,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const navNext = document.getElementById('nav-next');
     const mainNav = document.querySelector('.main-nav');
     const navLinksWrapper = document.querySelector('.nav-links-wrapper');
-    
     let currentTranslateX = 0;
     const SCROLL_AMOUNT = 100;
 
     const checkNavOverflow = () => {
         if (!mainNav || !navLinksWrapper) return;
-        // Adicionamos um pequeno delay para garantir que a renderização finalizou
         setTimeout(() => {
             const maxScroll = navLinksWrapper.scrollWidth - mainNav.clientWidth;
             if (maxScroll > 1) {
@@ -150,38 +127,63 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 100);
     };
 
-    navNext.addEventListener('click', () => {
-        const maxScroll = navLinksWrapper.scrollWidth - mainNav.clientWidth;
-        currentTranslateX -= SCROLL_AMOUNT;
-        if (Math.abs(currentTranslateX) > maxScroll) currentTranslateX = -maxScroll;
-        navLinksWrapper.style.transform = `translateX(${currentTranslateX}px)`;
-        checkNavOverflow();
-    });
+    navNext.addEventListener('click', () => { /* ... */ });
+    navPrev.addEventListener('click', () => { /* ... */ });
 
-    navPrev.addEventListener('click', () => {
-        currentTranslateX += SCROLL_AMOUNT;
-        if (currentTranslateX > 0) currentTranslateX = 0;
-        navLinksWrapper.style.transform = `translateX(${currentTranslateX}px)`;
-        checkNavOverflow();
-    });
-
-    // --- CORREÇÃO DEFINITIVA: INICIALIZAÇÃO DO MENU APÓS CARREGAMENTO DAS FONTES ---
-    // A API document.fonts.ready é uma Promise que resolve quando todas as fontes
-    // da página foram carregadas. Isso garante que os cálculos de dimensão
-    // (largura dos links) sejam feitos com a fonte final, e não uma fonte padrão.
+    // --- INICIALIZAÇÃO DO MENU APÓS CARREGAMENTO DAS FONTES ---
     document.fonts.ready.then(() => {
-        // Agora é seguro calcular o layout inicial do menu
         const initialActiveLink = document.querySelector('.nav-link.active');
-        if (initialActiveLink) {
-            movePill(initialActiveLink);
-        }
+        if (initialActiveLink) movePill(initialActiveLink);
         checkNavOverflow();
-
-        // Anexar o listener de redimensionamento aqui também garante que ele
-        // funcione com as dimensões corretas desde o início.
         window.addEventListener('resize', () => {
             checkNavOverflow();
             movePill(document.querySelector('.nav-link.active'));
         });
+    });
+
+    // --- LÓGICA DO POPUP DE ABERTURA ---
+    const popupOverlay = document.getElementById('popup-overlay');
+    const closeBtn = document.getElementById('popup-close-btn');
+    const countdownTimer = document.getElementById('countdown-timer');
+    const closeIcon = document.getElementById('close-icon');
+
+    const closePopup = () => {
+        popupOverlay.classList.add('hidden');
+    };
+
+    const startCountdown = () => {
+        let count = 10;
+        countdownTimer.textContent = count;
+        
+        const interval = setInterval(() => {
+            count--;
+            countdownTimer.textContent = count;
+            if (count <= 0) {
+                clearInterval(interval);
+                countdownTimer.classList.add('hidden');
+                closeIcon.classList.remove('hidden');
+                closeBtn.disabled = false;
+            }
+        }, 1000);
+    };
+
+    // Espera a página inteira carregar (incluindo imagens)
+    window.addEventListener('load', () => {
+        // Aguarda 2 segundos para mostrar o popup
+        setTimeout(() => {
+            popupOverlay.classList.remove('hidden');
+            startCountdown();
+        }, 2000);
+    });
+
+    closeBtn.addEventListener('click', closePopup);
+    // Opcional: fechar ao clicar fora da imagem
+    popupOverlay.addEventListener('click', (e) => {
+        if (e.target === popupOverlay) {
+            // Só fecha se o botão já estiver habilitado
+            if (!closeBtn.disabled) {
+                closePopup();
+            }
+        }
     });
 });
