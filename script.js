@@ -130,17 +130,6 @@ document.addEventListener('DOMContentLoaded', () => {
     navNext.addEventListener('click', () => { /* ... */ });
     navPrev.addEventListener('click', () => { /* ... */ });
 
-    // --- INICIALIZAÇÃO DO MENU APÓS CARREGAMENTO DAS FONTES ---
-    document.fonts.ready.then(() => {
-        const initialActiveLink = document.querySelector('.nav-link.active');
-        if (initialActiveLink) movePill(initialActiveLink);
-        checkNavOverflow();
-        window.addEventListener('resize', () => {
-            checkNavOverflow();
-            movePill(document.querySelector('.nav-link.active'));
-        });
-    });
-
     // --- LÓGICA DO POPUP DE ABERTURA ---
     const popupOverlay = document.getElementById('popup-overlay');
     const closeBtn = document.getElementById('popup-close-btn');
@@ -167,23 +156,32 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 1000);
     };
 
-    // Espera a página inteira carregar (incluindo imagens)
+    closeBtn.addEventListener('click', closePopup);
+    popupOverlay.addEventListener('click', (e) => {
+        if (e.target === popupOverlay && !closeBtn.disabled) {
+            closePopup();
+        }
+    });
+
+    // --- CORREÇÃO DEFINITIVA: UNIFICAÇÃO DA INICIALIZAÇÃO ---
+    // Usamos 'window.onload' para garantir que TUDO (fontes, imagens, etc.)
+    // esteja carregado antes de executarmos códigos que dependem do layout final.
     window.addEventListener('load', () => {
-        // Aguarda 2 segundos para mostrar o popup
+        // 1. Inicializa o menu com as dimensões corretas
+        const initialActiveLink = document.querySelector('.nav-link.active');
+        if (initialActiveLink) movePill(initialActiveLink);
+        checkNavOverflow();
+        
+        // 2. Anexa o listener de redimensionamento para o menu
+        window.addEventListener('resize', () => {
+            checkNavOverflow();
+            movePill(document.querySelector('.nav-link.active'));
+        });
+
+        // 3. Aguarda 2 segundos e então mostra o popup
         setTimeout(() => {
             popupOverlay.classList.remove('hidden');
             startCountdown();
         }, 2000);
-    });
-
-    closeBtn.addEventListener('click', closePopup);
-    // Opcional: fechar ao clicar fora da imagem
-    popupOverlay.addEventListener('click', (e) => {
-        if (e.target === popupOverlay) {
-            // Só fecha se o botão já estiver habilitado
-            if (!closeBtn.disabled) {
-                closePopup();
-            }
-        }
     });
 });
