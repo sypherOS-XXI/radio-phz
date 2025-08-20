@@ -143,14 +143,13 @@ body {
 .sidebar { width: 300px; flex-shrink: 0; }
 .section-title { font-size: 1.8rem; margin-bottom: 20px; border-bottom: 3px solid var(--primary-color); padding-bottom: 10px; }
 
-/* ATUALIZADO: Card sem estilos 3D */
 .post-card { 
     background-color: var(--card-bg); 
     border-radius: 12px; 
     box-shadow: 0 4px 15px var(--shadow-color); 
     margin-bottom: 30px; 
     overflow: hidden; 
-    padding: 20px; /* Padding movido para cá */
+    padding: 20px;
     transition: box-shadow 0.3s ease;
 }
 .post-card:hover {
@@ -164,7 +163,6 @@ body {
 .sidebar-widget { background-color: var(--card-bg); padding: 20px; border-radius: 8px; box-shadow: 0 4px 10px var(--shadow-color); margin-bottom: 20px; }
 .widget-title { font-size: 1.2rem; margin-top: 0; margin-bottom: 15px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px; }
 
-/* Botão com gradiente */
 .request-button { display: block; background: var(--primary-gradient); color: var(--text-on-primary); text-align: center; padding: 15px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 1.1rem; transition: transform 0.2s ease, box-shadow 0.2s ease; }
 .request-button:hover { transform: translateY(-2px); box-shadow: 0 6px 12px var(--shadow-color); }
 .request-button i { margin-right: 8px; }
@@ -177,7 +175,6 @@ body {
 .social-icons-sidebar a { color: var(--text-muted-color); font-size: 1.8rem; transition: color 0.2s, transform 0.2s; }
 .social-icons-sidebar a:hover { color: var(--primary-color); transform: scale(1.1); }
 
-/* Cor específica para o ícone do Facebook no hover */
 .social-icons a[aria-label="Facebook"]:hover,
 .social-icons-sidebar a[aria-label="Facebook"]:hover {
     color: #1877F2;
@@ -194,54 +191,300 @@ body {
     border-radius: 8px;
     box-shadow: 0 4px 10px var(--shadow-color);
 }
-.schedule-table { width: 100%; border-collapse: collapse; min-width: 700px; }
-.schedule-table th, .schedule-table td { padding: 15px; border: 1px solid var(--border-color); vertical-align: middle; }
-.schedule-table thead th { background-color: #f7f7f7; font-weight: bold; color: var(--text-color); text-align: center; }
-.schedule-table tbody th { background-color: #f7f7f7; font-weight: bold; color: var(--primary-color); width: 120px; text-align: center; }
-.program-info { text-align: center; }
-.program-info h4 { margin: 0 0 5px 0; font-size: 1rem; color: var(--text-color); }
-.program-info p { margin: 0; color: var(--text-muted-color); font-size: 0.9rem; line-height: 1.5; }
-.program-cell { background-color: var(--card-bg); transition: background-color 0.2s; text-align: center; }
-.program-cell:hover { background-color: #fdf2f2; }
+.schedule-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 700px;
+}
+.schedule-table th, .schedule-table td {
+    padding: 15px;
+    border: 1px solid #e0e0e0;
+    vertical-align: middle;
+}
+.schedule-table thead th {
+    background-color: #f7f7f7;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+}
+.schedule-table tbody th {
+    background-color: #f7f7f7;
+    font-weight: bold;
+    color: #e53935;
+    width: 120px;
+    text-align: center;
+}
+.program-info {
+    text-align: center;
+}
+.program-info h4 {
+    margin: 0 0 5px 0;
+    font-size: 1rem;
+    color: #222;
+}
+.program-info p {
+    margin: 0;
+    color: #666;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+.program-cell {
+    background-color: #fff;
+    transition: background-color 0.2s;
+    text-align: center;
+}
+.program-cell:hover {
+    background-color: #fdf2f2;
+}
 
 /* ================================== */
 /*          RESPONSIVIDADE            */
 /* ================================== */
 @media (max-width: 800px) {
-    .main-layout { flex-direction: column; }
-    .sidebar { width: 100%; }
-    .schedule-table-wrapper { padding: 0; box-shadow: none; background: transparent; }
-    .schedule-table { min-width: 100%; border: 0; }
-    .schedule-table thead { border: none; clip: rect(0 0 0 0); height: 1px; margin: -1px; overflow: hidden; padding: 0; position: absolute; width: 1px; }
-    .schedule-table tr { display: block; margin-bottom: 1rem; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px var(--shadow-color); background: var(--card-bg); }
-    .schedule-table td { display: block; text-align: right; border-bottom: 1px solid var(--border-color); padding-left: 50%; position: relative; }
-    .schedule-table td:last-child { border-bottom: 0; }
-    .schedule-table td:before { content: attr(data-day); position: absolute; left: 15px; width: 45%; padding-right: 10px; text-align: left; font-weight: bold; color: var(--text-color); }
-    .schedule-table tbody th { display: block; width: 100%; text-align: center; background-color: var(--primary-color); color: var(--text-on-primary); font-size: 1.1rem; }
-    .program-info { text-align: right; }
+    .main-layout {
+        flex-direction: column;
+    }
+    .sidebar {
+        width: 100%;
+    }
+
+    .schedule-table-wrapper {
+        padding: 0;
+        box-shadow: none;
+        background: transparent;
+    }
+    .schedule-table {
+        min-width: 100%;
+        border: 0;
+    }
+    .schedule-table thead {
+        border: none;
+        clip: rect(0 0 0 0);
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        padding: 0;
+        position: absolute;
+        width: 1px;
+    }
+    .schedule-table tr {
+        display: block;
+        margin-bottom: 1rem;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        background: #fff;
+    }
+    .schedule-table td {
+        display: block;
+        text-align: right;
+        border-bottom: 1px solid #eee;
+        padding-left: 50%;
+        position: relative;
+    }
+    .schedule-table td:last-child {
+        border-bottom: 0;
+    }
+    .schedule-table td:before {
+        content: attr(data-day);
+        position: absolute;
+        left: 15px;
+        width: 45%;
+        padding-right: 10px;
+        text-align: left;
+        font-weight: bold;
+        color: #333;
+    }
+    .schedule-table tbody th {
+        display: block;
+        width: 100%;
+        text-align: center;
+        background-color: #e53935;
+        color: #fff;
+        font-size: 1.1rem;
+    }
+    .program-info {
+        text-align: right;
+    }
 }
 
+
 @media (max-width: 600px) {
-    body { padding-top: 170px; }
-    #radio-player-container { flex-wrap: wrap; height: auto; padding: 10px 15px; row-gap: 10px; justify-content: space-between; }
-    .player-controls { order: 3; width: 100%; flex-grow: 0; }
-    .radio-info { flex-grow: 1; }
+    body { 
+        padding-top: 170px; 
+    }
+    #radio-player-container {
+        flex-wrap: wrap;
+        height: auto;
+        padding: 10px 15px;
+        row-gap: 10px;
+        justify-content: space-between; 
+    }
+    .player-controls {
+        order: 3;
+        width: 100%;
+        flex-grow: 0;
+    }
+    .radio-info {
+        flex-grow: 1;
+    }
     .radio-logo { width: 40px; height: 40px; margin-right: 10px; }
     #song-title { font-size: 0.9rem; }
     #artist-name { font-size: 0.8rem; }
     #volume-slider { width: 80px; }
-    .secondary-nav-container { top: 120px; padding: 0; justify-content: flex-start; }
-    .nav-arrows-container { display: flex; flex-direction: column; align-self: stretch; }
-    .nav-arrow { flex-grow: 1; width: 35px; }
-    #nav-prev { border-bottom: 1px solid rgba(255,255,255,0.2); }
-    .main-nav { overflow: hidden; justify-content: flex-start; gap: 0; flex-grow: 1; min-width: 0; }
-    .nav-links-wrapper { padding: 0 15px; transition: transform 0.3s ease-in-out; }
-    .nav-link { font-size: 0.9rem; flex-shrink: 0; }
+    .secondary-nav-container {
+        top: 120px; 
+        padding: 0;
+        justify-content: flex-start;
+    }
+    .nav-arrows-container {
+        display: flex;
+        flex-direction: column;
+        align-self: stretch;
+    }
+    .nav-arrow {
+        flex-grow: 1;
+        width: 35px;
+    }
+    #nav-prev {
+        border-bottom: 1px solid rgba(255,255,255,0.2);
+    }
+    .main-nav {
+        overflow: hidden;
+        justify-content: flex-start;
+        gap: 0;
+        flex-grow: 1;
+        min-width: 0;
+    }
+    .nav-links-wrapper {
+        padding: 0 15px;
+        transition: transform 0.3s ease-in-out;
+    }
+    .nav-link { 
+        font-size: 0.9rem; 
+        flex-shrink: 0;
+    }
 }
 
 @media (max-width: 380px) {
-    #radio-player-container { padding-left: 10px; padding-right: 10px; }
-    .radio-logo { width: 35px; height: 35px; margin-right: 8px; }
-    .volume-control svg { margin-right: 5px; }
-    #volume-slider { width: 60px; }
+    #radio-player-container {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    .radio-logo {
+        width: 35px;
+        height: 35px;
+        margin-right: 8px;
+    }
+    .volume-control svg {
+        margin-right: 5px;
+    }
+    #volume-slider {
+        width: 60px;
+    }
+}
+
+/* ================================== */
+/*           ESTILOS DO POPUP         */
+/* ================================== */
+#popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+#popup-overlay:not(.hidden) {
+    opacity: 1;
+    visibility: visible;
+}
+
+.popup-content {
+    position: relative;
+    max-width: 500px; /* Largura máxima do popup */
+    width: 90%;
+    animation: zoomIn 0.4s ease-out;
+}
+
+.popup-content img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+}
+
+#popup-close-btn {
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    width: 40px;
+    height: 40px;
+    background-color: #ffffff;
+    color: #333;
+    border: none;
+    border-radius: 50%;
+    font-size: 24px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+#popup-close-btn:not(:disabled):hover {
+    transform: scale(1.1);
+    background-color: #f0f0f0;
+}
+
+#popup-close-btn:disabled {
+    cursor: default;
+}
+
+#close-icon {
+    line-height: 1; /* Alinha o 'X' perfeitamente */
+}
+
+/* NOVO: Estilo para o texto do popup */
+.popup-text {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.75);
+    color: #ffffff;
+    padding: 15px 20px;
+    text-align: center;
+    border-bottom-left-radius: 8px; /* Para combinar com o raio da imagem */
+    border-bottom-right-radius: 8px;
+    box-sizing: border-box;
+}
+
+.popup-text p {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+
+@keyframes zoomIn {
+    from {
+        transform: scale(0.7);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
