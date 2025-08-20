@@ -1,5 +1,5 @@
-// Adicionamos um log inicial para confirmar que o script novo (v3) está sendo executado.
-console.log('PHZ Music Script v3 Loaded.');
+// PHZ Music Script v4
+console.log('PHZ Music Script v4 Loaded.');
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -10,18 +10,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const countdownTimer = document.getElementById('countdown-timer');
     const closeIcon = document.getElementById('close-icon');
 
-    // Verifica se o elemento do popup existe antes de continuar
     if (popupOverlay) {
         console.log('Popup element found.');
-
-        const closePopup = () => {
-            popupOverlay.classList.add('hidden');
-        };
-
+        const closePopup = () => { popupOverlay.classList.add('hidden'); };
         const startCountdown = () => {
             let count = 10;
             countdownTimer.textContent = count;
-            
             const interval = setInterval(() => {
                 count--;
                 countdownTimer.textContent = count;
@@ -33,15 +27,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }, 1000);
         };
-
         closeBtn.addEventListener('click', closePopup);
         popupOverlay.addEventListener('click', (e) => {
             if (e.target === popupOverlay && !closeBtn.disabled) {
                 closePopup();
             }
         });
-        
-        // O popup é preparado 2 segundos após a estrutura da página estar pronta.
         setTimeout(() => {
             console.log('2-second timer finished. Showing popup.');
             popupOverlay.classList.remove('hidden');
@@ -50,7 +41,6 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         console.error('Popup element (#popup-overlay) not found in the DOM.');
     }
-
 
     // --- CONTROLES DO PLAYER DE ÁUDIO ---
     const audio = document.getElementById('audio-stream');
@@ -66,7 +56,6 @@ document.addEventListener('DOMContentLoaded', () => {
             audio.pause();
         }
     };
-
     const updateIcon = () => {
         if (audio.paused) {
             playIcon.style.display = 'block';
@@ -76,32 +65,17 @@ document.addEventListener('DOMContentLoaded', () => {
             pauseIcon.style.display = 'block';
         }
     };
-
     playPauseBtn.addEventListener('click', togglePlayPause);
     audio.addEventListener('play', updateIcon);
     audio.addEventListener('pause', updateIcon);
     volumeSlider.addEventListener('input', (e) => { audio.volume = e.target.value; });
     updateIcon();
 
-    // --- Lógica para buscar informações da música (Now Playing) ---
-    const fetchNowPlaying = async () => {
-        try {
-            const response = await fetch('https://stream.zeno.fm/api/new_nowplaying/41virxfygt0uv');
-            const data = await response.json();
-            // ... (resto da função fetchNowPlaying)
-        } catch (error) {
-            // ...
-        }
-    };
-    fetchNowPlaying();
-    setInterval(fetchNowPlaying, 7000);
-
     // --- LÓGICA DE NAVEGAÇÃO POR ABAS (PÁGINAS) ---
     const navLinks = document.querySelectorAll('.nav-link');
     const pageContents = document.querySelectorAll('.page-content');
     const readMoreLink = document.getElementById('read-more-construcao');
     
-    // Demais funções da navegação...
     const showPage = (pageId) => {
         pageContents.forEach(page => page.classList.remove('active'));
         const targetPage = document.getElementById(pageId);
@@ -111,18 +85,21 @@ document.addEventListener('DOMContentLoaded', () => {
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
-            // ... (código do clique)
             const targetPageId = link.getAttribute('data-page');
             navLinks.forEach(navLink => navLink.classList.remove('active'));
             link.classList.add('active');
             showPage(targetPageId);
-            // O movePill será chamado no evento 'load' para garantir as dimensões corretas
         });
     });
     
     readMoreLink.addEventListener('click', (e) => {
         e.preventDefault();
-        // ... (código do clique)
+        const navPill = document.querySelector('.nav-pill');
+        const targetPageId = readMoreLink.getAttribute('data-page');
+        showPage(targetPageId);
+        navLinks.forEach(navLink => navLink.classList.remove('active'));
+        if (navPill) navPill.style.width = '0';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 });
 
@@ -142,7 +119,6 @@ window.addEventListener('load', () => {
         navPill.style.transform = `translateX(${linkRect.left - wrapperRect.left}px)`;
     };
     
-    // Associa novamente os cliques para mover a pílula, agora com as dimensões corretas
     navLinks.forEach(link => {
         link.addEventListener('click', () => {
             movePill(link);
@@ -153,12 +129,26 @@ window.addEventListener('load', () => {
     const initialActiveLink = document.querySelector('.nav-link.active');
     if (initialActiveLink) movePill(initialActiveLink);
     
-    // Lógica do menu scrollável
     const mainNav = document.querySelector('.main-nav');
     const navLinksWrapper = document.querySelector('.nav-links-wrapper');
     const checkNavOverflow = () => {
         if (!mainNav || !navLinksWrapper) return;
-        // ... (resto da função checkNavOverflow)
+        const navPrev = document.getElementById('nav-prev');
+        const navNext = document.getElementById('nav-next');
+        let currentTranslateX = 0;
+        
+        setTimeout(() => {
+            const maxScroll = navLinksWrapper.scrollWidth - mainNav.clientWidth;
+            if (maxScroll > 1) {
+                navPrev.classList.toggle('hidden', currentTranslateX === 0);
+                navNext.classList.toggle('hidden', Math.abs(currentTranslateX) >= maxScroll - 1);
+            } else {
+                navPrev.classList.add('hidden');
+                navNext.classList.add('hidden');
+                currentTranslateX = 0;
+                navLinksWrapper.style.transform = `translateX(0px)`;
+            }
+        }, 100);
     };
     checkNavOverflow();
     
