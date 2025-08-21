@@ -1,5 +1,5 @@
-// PHZ Music Script v4.1 - Menu Lógico Consolidado
-console.log('PHZ Music Script v4.1 Loaded.');
+// PHZ Music Script v4.2 - Correção Definitiva do Deslizamento de Menu
+console.log('PHZ Music Script v4.2 Loaded.');
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -81,6 +81,10 @@ window.addEventListener('load', () => {
     const navLinks = document.querySelectorAll('.nav-link');
     const pageContents = document.querySelectorAll('.page-content');
     const readMoreLink = document.getElementById('read-more-construcao');
+    const mainNav = document.querySelector('.main-nav');
+    const navLinksWrapper = document.querySelector('.nav-links-wrapper');
+    const navPrev = document.getElementById('nav-prev');
+    const navNext = document.getElementById('nav-next');
     
     // --- Funções da Navegação ---
     const showPage = (pageId) => {
@@ -102,18 +106,10 @@ window.addEventListener('load', () => {
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
-            
-            // 1. Obter a página alvo
             const targetPageId = link.getAttribute('data-page');
-
-            // 2. Atualizar a classe 'active' nos links
             navLinks.forEach(navLink => navLink.classList.remove('active'));
             link.classList.add('active');
-            
-            // 3. Mover a pílula visual
             movePill(link);
-            
-            // 4. Mostrar o conteúdo da página correta
             showPage(targetPageId);
         });
     });
@@ -125,55 +121,42 @@ window.addEventListener('load', () => {
             const targetPageId = readMoreLink.getAttribute('data-page');
             showPage(targetPageId);
             navLinks.forEach(navLink => navLink.classList.remove('active'));
-            if (navPill) navPill.style.width = '0'; // Esconde a pílula
+            if (navPill) navPill.style.width = '0';
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     }
 
     // --- Lógica das Setas de Navegação para Telas Pequenas ---
-    const mainNav = document.querySelector('.main-nav');
-    const navLinksWrapper = document.querySelector('.nav-links-wrapper');
-    const navPrev = document.getElementById('nav-prev');
-    const navNext = document.getElementById('nav-next');
-    
     let currentTranslateX = 0;
-    let maxScroll = 0;
     const scrollStep = 150;
 
-    const updateArrows = () => {
-        if (!navPrev || !navNext) return;
-        maxScroll = navLinksWrapper.scrollWidth - mainNav.clientWidth;
-        navPrev.classList.toggle('hidden', currentTranslateX === 0);
-        navNext.classList.toggle('hidden', Math.abs(currentTranslateX) >= maxScroll - 1);
-    };
+    const updateNavState = () => {
+        if (!mainNav || !navLinksWrapper || !navPrev || !navNext) return;
 
-    const checkNavOverflow = () => {
-        if (!mainNav || !navLinksWrapper) return;
-        
-        maxScroll = navLinksWrapper.scrollWidth - mainNav.clientWidth;
+        const maxScroll = navLinksWrapper.scrollWidth - mainNav.clientWidth;
 
-        if (maxScroll > 1) {
-            if (Math.abs(currentTranslateX) > maxScroll) {
-                currentTranslateX = -maxScroll;
-                navLinksWrapper.style.transform = `translateX(${currentTranslateX}px)`;
-            }
-            updateArrows();
-        } else {
-            navPrev.classList.add('hidden');
-            navNext.classList.add('hidden');
-            currentTranslateX = 0;
-            navLinksWrapper.style.transform = `translateX(0px)`;
+        // Atualiza a posição atual (caso a janela tenha sido redimensionada)
+        if (Math.abs(currentTranslateX) > maxScroll) {
+            currentTranslateX = -maxScroll;
         }
+
+        // Aplica a transformação
+        navLinksWrapper.style.transform = `translateX(${currentTranslateX}px)`;
+
+        // Mostra ou esconde as setas
+        const showArrows = maxScroll > 1;
+        navPrev.classList.toggle('hidden', !showArrows || currentTranslateX === 0);
+        navNext.classList.toggle('hidden', !showArrows || Math.abs(currentTranslateX) >= maxScroll - 1);
     };
 
     if (navNext && navPrev) {
         navNext.addEventListener('click', () => {
+            const maxScroll = navLinksWrapper.scrollWidth - mainNav.clientWidth;
             currentTranslateX -= scrollStep;
             if (Math.abs(currentTranslateX) > maxScroll) {
                 currentTranslateX = -maxScroll;
             }
-            navLinksWrapper.style.transform = `translateX(${currentTranslateX}px)`;
-            updateArrows();
+            updateNavState();
         });
 
         navPrev.addEventListener('click', () => {
@@ -181,20 +164,22 @@ window.addEventListener('load', () => {
             if (currentTranslateX > 0) {
                 currentTranslateX = 0;
             }
-            navLinksWrapper.style.transform = `translateX(${currentTranslateX}px)`;
-            updateArrows();
+            updateNavState();
         });
     }
     
     // --- Inicialização do Menu ---
-    setTimeout(() => {
+    const initMenu = () => {
         const initialActiveLink = document.querySelector('.nav-link.active');
         if (initialActiveLink) movePill(initialActiveLink);
-        checkNavOverflow();
-    }, 100);
+        updateNavState();
+    };
+
+    // Usar um pequeno timeout para garantir que o DOM está totalmente renderizado
+    setTimeout(initMenu, 100);
     
     window.addEventListener('resize', () => {
-        checkNavOverflow();
+        updateNavState();
         movePill(document.querySelector('.nav-link.active'));
     });
 });
