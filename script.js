@@ -1,9 +1,9 @@
-// PHZ Music Script v4
-console.log('PHZ Music Script v4 Loaded.');
+// PHZ Music Script v4.1 - Menu Lógico Consolidado
+console.log('PHZ Music Script v4.1 Loaded.');
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    // --- LÓgica DO POPUP (EXECUTADA QUANDO O HTML ESTÁ PRONTO) ---
+    // --- LÓGICA DO POPUP (EXECUTADA QUANDO O HTML ESTÁ PRONTO) ---
     console.log('DOM Ready. Setting up popup.');
     const popupOverlay = document.getElementById('popup-overlay');
     const closeBtn = document.getElementById('popup-close-btn');
@@ -70,45 +70,24 @@ document.addEventListener('DOMContentLoaded', () => {
     audio.addEventListener('pause', updateIcon);
     volumeSlider.addEventListener('input', (e) => { audio.volume = e.target.value; });
     updateIcon();
+});
 
-    // --- LÓGICA DE NAVEGAÇÃO POR ABAS (PÁGINAS) ---
+// --- LÓGICA DO MENU E NAVEGAÇÃO (EXECUTADA QUANDO TUDO, INCLUINDO FONTES, ESTÁ CARREGADO) ---
+window.addEventListener('load', () => {
+    console.log('Window Loaded. Setting up navigation menu.');
+
+    // --- Elementos da Navegação ---
+    const navPill = document.querySelector('.nav-pill');
     const navLinks = document.querySelectorAll('.nav-link');
     const pageContents = document.querySelectorAll('.page-content');
     const readMoreLink = document.getElementById('read-more-construcao');
     
+    // --- Funções da Navegação ---
     const showPage = (pageId) => {
         pageContents.forEach(page => page.classList.remove('active'));
         const targetPage = document.getElementById(pageId);
         if (targetPage) targetPage.classList.add('active');
     };
-    
-    navLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
-            const targetPageId = link.getAttribute('data-page');
-            navLinks.forEach(navLink => navLink.classList.remove('active'));
-            link.classList.add('active');
-            showPage(targetPageId);
-        });
-    });
-    
-    readMoreLink.addEventListener('click', (e) => {
-        e.preventDefault();
-        const navPill = document.querySelector('.nav-pill');
-        const targetPageId = readMoreLink.getAttribute('data-page');
-        showPage(targetPageId);
-        navLinks.forEach(navLink => navLink.classList.remove('active'));
-        if (navPill) navPill.style.width = '0';
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-});
-
-// --- LÓGICA DO MENU (EXECUTADA QUANDO TUDO, INCLUINDO FONTES, ESTÁ CARREGADO) ---
-window.addEventListener('load', () => {
-    console.log('Window Loaded. Setting up menu.');
-
-    const navPill = document.querySelector('.nav-pill');
-    const navLinks = document.querySelectorAll('.nav-link');
 
     const movePill = (targetLink) => {
         if (!targetLink || !navPill) return;
@@ -118,17 +97,40 @@ window.addEventListener('load', () => {
         navPill.style.width = `${linkRect.width}px`;
         navPill.style.transform = `translateX(${linkRect.left - wrapperRect.left}px)`;
     };
-    
+
+    // --- Lógica de clique nos links do menu principal ---
     navLinks.forEach(link => {
-        link.addEventListener('click', () => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            // 1. Obter a página alvo
+            const targetPageId = link.getAttribute('data-page');
+
+            // 2. Atualizar a classe 'active' nos links
+            navLinks.forEach(navLink => navLink.classList.remove('active'));
+            link.classList.add('active');
+            
+            // 3. Mover a pílula visual
             movePill(link);
-            link.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+            
+            // 4. Mostrar o conteúdo da página correta
+            showPage(targetPageId);
         });
     });
-
-    const initialActiveLink = document.querySelector('.nav-link.active');
-    if (initialActiveLink) movePill(initialActiveLink);
     
+    // --- Lógica para o link "Leia Mais" ---
+    if(readMoreLink) {
+        readMoreLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetPageId = readMoreLink.getAttribute('data-page');
+            showPage(targetPageId);
+            navLinks.forEach(navLink => navLink.classList.remove('active'));
+            if (navPill) navPill.style.width = '0'; // Esconde a pílula
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
+
+    // --- Lógica das Setas de Navegação para Telas Pequenas ---
     const mainNav = document.querySelector('.main-nav');
     const navLinksWrapper = document.querySelector('.nav-links-wrapper');
     const navPrev = document.getElementById('nav-prev');
@@ -136,28 +138,27 @@ window.addEventListener('load', () => {
     
     let currentTranslateX = 0;
     let maxScroll = 0;
-    const scrollStep = 150; // Quantos pixels rolar por clique
+    const scrollStep = 150;
 
     const updateArrows = () => {
+        if (!navPrev || !navNext) return;
+        maxScroll = navLinksWrapper.scrollWidth - mainNav.clientWidth;
         navPrev.classList.toggle('hidden', currentTranslateX === 0);
-        // Usamos uma tolerância de 1px para evitar problemas de arredondamento
         navNext.classList.toggle('hidden', Math.abs(currentTranslateX) >= maxScroll - 1);
     };
 
     const checkNavOverflow = () => {
         if (!mainNav || !navLinksWrapper) return;
         
-        // Recalcula o scroll máximo
         maxScroll = navLinksWrapper.scrollWidth - mainNav.clientWidth;
 
-        if (maxScroll > 1) { // Se houver algo para rolar
-            // Garante que a posição atual não seja inválida após redimensionar
+        if (maxScroll > 1) {
             if (Math.abs(currentTranslateX) > maxScroll) {
                 currentTranslateX = -maxScroll;
                 navLinksWrapper.style.transform = `translateX(${currentTranslateX}px)`;
             }
             updateArrows();
-        } else { // Se não houver overflow
+        } else {
             navPrev.classList.add('hidden');
             navNext.classList.add('hidden');
             currentTranslateX = 0;
@@ -165,11 +166,9 @@ window.addEventListener('load', () => {
         }
     };
 
-    if(navNext && navPrev){
+    if (navNext && navPrev) {
         navNext.addEventListener('click', () => {
-            // Move para a esquerda (valor negativo)
             currentTranslateX -= scrollStep;
-            // Limita o movimento ao máximo de scroll
             if (Math.abs(currentTranslateX) > maxScroll) {
                 currentTranslateX = -maxScroll;
             }
@@ -178,9 +177,7 @@ window.addEventListener('load', () => {
         });
 
         navPrev.addEventListener('click', () => {
-            // Move para a direita (valor positivo, até zero)
             currentTranslateX += scrollStep;
-            // Limita o movimento para não passar do início (0)
             if (currentTranslateX > 0) {
                 currentTranslateX = 0;
             }
@@ -189,11 +186,12 @@ window.addEventListener('load', () => {
         });
     }
     
-    // Executa as verificações iniciais
+    // --- Inicialização do Menu ---
     setTimeout(() => {
+        const initialActiveLink = document.querySelector('.nav-link.active');
+        if (initialActiveLink) movePill(initialActiveLink);
         checkNavOverflow();
-        movePill(document.querySelector('.nav-link.active'));
-    }, 100); // Pequeno timeout para garantir que as fontes e renderização estejam completos
+    }, 100);
     
     window.addEventListener('resize', () => {
         checkNavOverflow();
