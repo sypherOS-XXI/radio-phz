@@ -1,17 +1,16 @@
-// PHZ Music Script v4.2 - Correção Definitiva do Deslizamento de Menu
-console.log('PHZ Music Script v4.2 Loaded.');
+// PHZ Music Script v4.3 - Correção de Race Condition com Font Loading
+console.log('PHZ Music Script v4.3 Loaded.');
 
 document.addEventListener('DOMContentLoaded', () => {
 
     // --- LÓGICA DO POPUP (EXECUTADA QUANDO O HTML ESTÁ PRONTO) ---
-    console.log('DOM Ready. Setting up popup.');
+    // (O código do popup e do player permanece o mesmo, não há necessidade de alteração aqui)
     const popupOverlay = document.getElementById('popup-overlay');
     const closeBtn = document.getElementById('popup-close-btn');
     const countdownTimer = document.getElementById('countdown-timer');
     const closeIcon = document.getElementById('close-icon');
 
     if (popupOverlay) {
-        console.log('Popup element found.');
         const closePopup = () => { popupOverlay.classList.add('hidden'); };
         const startCountdown = () => {
             let count = 10;
@@ -34,12 +33,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
         setTimeout(() => {
-            console.log('2-second timer finished. Showing popup.');
             popupOverlay.classList.remove('hidden');
             startCountdown();
         }, 2000);
-    } else {
-        console.error('Popup element (#popup-overlay) not found in the DOM.');
     }
 
     // --- CONTROLES DO PLAYER DE ÁUDIO ---
@@ -57,13 +53,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
     const updateIcon = () => {
-        if (audio.paused) {
-            playIcon.style.display = 'block';
-            pauseIcon.style.display = 'none';
-        } else {
-            playIcon.style.display = 'none';
-            pauseIcon.style.display = 'block';
-        }
+        playIcon.style.display = audio.paused ? 'block' : 'none';
+        pauseIcon.style.display = audio.paused ? 'none' : 'block';
     };
     playPauseBtn.addEventListener('click', togglePlayPause);
     audio.addEventListener('play', updateIcon);
@@ -102,7 +93,6 @@ window.addEventListener('load', () => {
         navPill.style.transform = `translateX(${linkRect.left - wrapperRect.left}px)`;
     };
 
-    // --- Lógica de clique nos links do menu principal ---
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
@@ -114,7 +104,6 @@ window.addEventListener('load', () => {
         });
     });
     
-    // --- Lógica para o link "Leia Mais" ---
     if(readMoreLink) {
         readMoreLink.addEventListener('click', (e) => {
             e.preventDefault();
@@ -126,26 +115,28 @@ window.addEventListener('load', () => {
         });
     }
 
-    // --- Lógica das Setas de Navegação para Telas Pequenas ---
+    // --- Lógica das Setas de Navegação ---
     let currentTranslateX = 0;
     const scrollStep = 150;
 
     const updateNavState = () => {
         if (!mainNav || !navLinksWrapper || !navPrev || !navNext) return;
 
-        const maxScroll = navLinksWrapper.scrollWidth - mainNav.clientWidth;
+        const wrapperWidth = navLinksWrapper.scrollWidth;
+        const containerWidth = mainNav.clientWidth;
+        const maxScroll = wrapperWidth - containerWidth;
+        
+        // Adicionando logs para depuração
+        console.log(`Nav Widths: Wrapper=${wrapperWidth}px, Container=${containerWidth}px, MaxScroll=${maxScroll.toFixed(2)}px`);
 
-        // Atualiza a posição atual (caso a janela tenha sido redimensionada)
         if (Math.abs(currentTranslateX) > maxScroll) {
             currentTranslateX = -maxScroll;
         }
 
-        // Aplica a transformação
         navLinksWrapper.style.transform = `translateX(${currentTranslateX}px)`;
 
-        // Mostra ou esconde as setas
         const showArrows = maxScroll > 1;
-        navPrev.classList.toggle('hidden', !showArrows || currentTranslateX === 0);
+        navPrev.classList.toggle('hidden', !showArrows || currentTranslateX >= 0);
         navNext.classList.toggle('hidden', !showArrows || Math.abs(currentTranslateX) >= maxScroll - 1);
     };
 
@@ -168,15 +159,25 @@ window.addEventListener('load', () => {
         });
     }
     
-    // --- Inicialização do Menu ---
+    // --- INICIALIZAÇÃO INTELIGENTE DO MENU ---
     const initMenu = () => {
+        console.log('Initializing menu logic...');
         const initialActiveLink = document.querySelector('.nav-link.active');
         if (initialActiveLink) movePill(initialActiveLink);
         updateNavState();
     };
 
-    // Usar um pequeno timeout para garantir que o DOM está totalmente renderizado
-    setTimeout(initMenu, 100);
+    // Espera as fontes carregarem ANTES de inicializar o menu.
+    if (document.fonts) {
+        document.fonts.ready.then(() => {
+            console.log('All fonts have loaded. Running initMenu.');
+            initMenu();
+        });
+    } else {
+        // Fallback para navegadores mais antigos
+        console.log('document.fonts not supported. Using a safer timeout.');
+        setTimeout(initMenu, 300);
+    }
     
     window.addEventListener('resize', () => {
         updateNavState();
