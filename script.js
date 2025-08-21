@@ -3,7 +3,7 @@ console.log('PHZ Music Script v4 Loaded.');
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    // --- LÓGICA DO POPUP (EXECUTADA QUANDO O HTML ESTÁ PRONTO) ---
+    // --- LÓgica DO POPUP (EXECUTADA QUANDO O HTML ESTÁ PRONTO) ---
     console.log('DOM Ready. Setting up popup.');
     const popupOverlay = document.getElementById('popup-overlay');
     const closeBtn = document.getElementById('popup-close-btn');
@@ -131,26 +131,69 @@ window.addEventListener('load', () => {
     
     const mainNav = document.querySelector('.main-nav');
     const navLinksWrapper = document.querySelector('.nav-links-wrapper');
+    const navPrev = document.getElementById('nav-prev');
+    const navNext = document.getElementById('nav-next');
+    
+    let currentTranslateX = 0;
+    let maxScroll = 0;
+    const scrollStep = 150; // Quantos pixels rolar por clique
+
+    const updateArrows = () => {
+        navPrev.classList.toggle('hidden', currentTranslateX === 0);
+        // Usamos uma tolerância de 1px para evitar problemas de arredondamento
+        navNext.classList.toggle('hidden', Math.abs(currentTranslateX) >= maxScroll - 1);
+    };
+
     const checkNavOverflow = () => {
         if (!mainNav || !navLinksWrapper) return;
-        const navPrev = document.getElementById('nav-prev');
-        const navNext = document.getElementById('nav-next');
-        let currentTranslateX = 0;
         
-        setTimeout(() => {
-            const maxScroll = navLinksWrapper.scrollWidth - mainNav.clientWidth;
-            if (maxScroll > 1) {
-                navPrev.classList.toggle('hidden', currentTranslateX === 0);
-                navNext.classList.toggle('hidden', Math.abs(currentTranslateX) >= maxScroll - 1);
-            } else {
-                navPrev.classList.add('hidden');
-                navNext.classList.add('hidden');
-                currentTranslateX = 0;
-                navLinksWrapper.style.transform = `translateX(0px)`;
+        // Recalcula o scroll máximo
+        maxScroll = navLinksWrapper.scrollWidth - mainNav.clientWidth;
+
+        if (maxScroll > 1) { // Se houver algo para rolar
+            // Garante que a posição atual não seja inválida após redimensionar
+            if (Math.abs(currentTranslateX) > maxScroll) {
+                currentTranslateX = -maxScroll;
+                navLinksWrapper.style.transform = `translateX(${currentTranslateX}px)`;
             }
-        }, 100);
+            updateArrows();
+        } else { // Se não houver overflow
+            navPrev.classList.add('hidden');
+            navNext.classList.add('hidden');
+            currentTranslateX = 0;
+            navLinksWrapper.style.transform = `translateX(0px)`;
+        }
     };
-    checkNavOverflow();
+
+    if(navNext && navPrev){
+        navNext.addEventListener('click', () => {
+            // Move para a esquerda (valor negativo)
+            currentTranslateX -= scrollStep;
+            // Limita o movimento ao máximo de scroll
+            if (Math.abs(currentTranslateX) > maxScroll) {
+                currentTranslateX = -maxScroll;
+            }
+            navLinksWrapper.style.transform = `translateX(${currentTranslateX}px)`;
+            updateArrows();
+        });
+
+        navPrev.addEventListener('click', () => {
+            // Move para a direita (valor positivo, até zero)
+            currentTranslateX += scrollStep;
+            // Limita o movimento para não passar do início (0)
+            if (currentTranslateX > 0) {
+                currentTranslateX = 0;
+            }
+            navLinksWrapper.style.transform = `translateX(${currentTranslateX}px)`;
+            updateArrows();
+        });
+    }
+    
+    // Executa as verificações iniciais
+    setTimeout(() => {
+        checkNavOverflow();
+        movePill(document.querySelector('.nav-link.active'));
+    }, 100); // Pequeno timeout para garantir que as fontes e renderização estejam completos
     
     window.addEventListener('resize', () => {
         checkNavOverflow();
