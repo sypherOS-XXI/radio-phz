@@ -80,30 +80,20 @@ body {
     box-shadow: 0 2px 5px var(--shadow-color);
     z-index: 999;
     box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .main-nav {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 50px;
-    /* ADICIONADO: Habilita a rolagem horizontal */
-    overflow-x: auto;
-    /* ADICIONADO: Esconde a barra de rolagem visualmente */
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* Internet Explorer 10+ */
-}
-/* ADICIONADO: Esconde a barra de rolagem no Chrome, Safari, etc. */
-.main-nav::-webkit-scrollbar {
-    display: none;
 }
 .nav-links-wrapper {
     position: relative;
     display: flex;
     gap: 30px;
-    /* ADICIONADO: Garante que os itens não encolham */
-    flex-shrink: 0;
-    /* ADICIONADO: Espaçamento nas bordas para não colar */
-    padding: 0 15px;
 }
 .nav-link {
     color: rgba(255, 255, 255, 0.7); 
@@ -133,9 +123,9 @@ body {
     transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-/* REMOVIDO: Estilos das setas não são mais necessários */
 .nav-arrows-container { display: none; }
-.nav-arrow { display: none; }
+.nav-arrow { background: rgba(0,0,0,0.15); border: none; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; transition: background-color 0.2s; }
+.nav-arrow:hover { background: rgba(0,0,0,0.3); }
 .hidden { display: none !important; }
 
 /* ================================== */
@@ -343,19 +333,36 @@ body {
     #artist-name { font-size: 0.8rem; }
     #volume-slider { width: 80px; }
     .secondary-nav-container {
-        top: 120px;
-    }
-    /* AJUSTES NO MENU RESPONSIVO */
-    .main-nav {
-        /* Em telas menores, alinha os itens à esquerda para o scroll começar do início */
+        top: 120px; 
+        padding: 0;
         justify-content: flex-start;
     }
+    .nav-arrows-container {
+        display: flex;
+        flex-direction: column;
+        align-self: stretch;
+    }
+    .nav-arrow {
+        flex-grow: 1;
+        width: 35px;
+    }
+    #nav-prev {
+        border-bottom: 1px solid rgba(255,255,255,0.2);
+    }
+    .main-nav {
+        overflow: hidden;
+        justify-content: flex-start;
+        gap: 0;
+        flex-grow: 1;
+        min-width: 0;
+    }
     .nav-links-wrapper {
-        /* Remove a transição de transform que não é mais usada */
-        transition: none;
+        padding: 0 15px;
+        transition: transform 0.3s ease-in-out;
     }
     .nav-link { 
-        font-size: 0.9rem;
+        font-size: 0.9rem; 
+        flex-shrink: 0;
     }
 }
 
