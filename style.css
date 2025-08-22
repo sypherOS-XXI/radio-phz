@@ -138,6 +138,32 @@ body {
 
 .banner-container { width: 100%; margin-bottom: 40px; text-align: center; }
 .banner-container img { max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 10px var(--shadow-color); vertical-align: middle; }
+
+/* --- ESTILOS DO SLIDESHOW DE BANNERS --- */
+.slideshow-container {
+    max-width: 728px; /* Mantém a dimensão solicitada */
+    margin: 0 auto;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px var(--shadow-color);
+}
+.slideshow-wrapper {
+    display: flex;
+    transition: transform 0.8s ease-in-out; /* Animação de transição suave */
+}
+.slide {
+    width: 100%;
+    flex-shrink: 0; /* Garante que os slides não encolham */
+}
+.slide img {
+    width: 100%;
+    height: auto;
+    vertical-align: middle; /* Remove pequeno espaço abaixo da imagem */
+    box-shadow: none; /* Remove sombra duplicada */
+    border-radius: 0; /* Remove borda da imagem individual */
+}
+/* --- FIM DOS ESTILOS DO SLIDESHOW --- */
+
 .main-layout { display: flex; gap: 30px; }
 .main-column { flex: 1; min-width: 0; }
 .sidebar { width: 300px; flex-shrink: 0; }
@@ -171,7 +197,13 @@ body {
 .social-icons a { color: var(--text-muted-color); font-size: 1.5rem; transition: color 0.2s, transform 0.2s; }
 .social-icons a:hover { color: var(--primary-color); transform: scale(1.1); }
 .site-footer { background-color: #18181b; color: #a1a1aa; text-align: center; padding: 20px; margin-top: 40px; font-size: 0.9rem; }
-.social-icons-sidebar { display: flex; justify-content: space-around; gap: 10px; padding: 10px 0; }
+
+.social-icons-sidebar {
+    display: flex;
+    justify-content: center; /* Alterado de space-around para center */
+    gap: 25px; /* Aumentado para um espaçamento mais agradável */
+    padding: 10px 0;
+}
 .social-icons-sidebar a { color: var(--text-muted-color); font-size: 1.8rem; transition: color 0.2s, transform 0.2s; }
 .social-icons-sidebar a:hover { color: var(--primary-color); transform: scale(1.1); }
 
