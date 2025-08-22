@@ -4,7 +4,6 @@ console.log('PHZ Music Script v4.3 Loaded.');
 document.addEventListener('DOMContentLoaded', () => {
 
     // --- LÓGICA DO POPUP (EXECUTADA QUANDO O HTML ESTÁ PRONTO) ---
-    // (O código do popup e do player permanece o mesmo, não há necessidade de alteração aqui)
     const popupOverlay = document.getElementById('popup-overlay');
     const closeBtn = document.getElementById('popup-close-btn');
     const countdownTimer = document.getElementById('countdown-timer');
@@ -13,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (popupOverlay) {
         const closePopup = () => { popupOverlay.classList.add('hidden'); };
         const startCountdown = () => {
-            let count = 10;
+            let count = 3; // <-- VALOR ATUALIZADO AQUI
             countdownTimer.textContent = count;
             const interval = setInterval(() => {
                 count--;
@@ -61,9 +60,24 @@ document.addEventListener('DOMContentLoaded', () => {
     audio.addEventListener('pause', updateIcon);
     volumeSlider.addEventListener('input', (e) => { audio.volume = e.target.value; });
     updateIcon();
+    
+    // --- LÓGICA DO SLIDESHOW DE BANNERS ---
+    const slideshowWrapper = document.querySelector('.slideshow-wrapper');
+    if (slideshowWrapper) {
+        const slides = document.querySelectorAll('.slide');
+        const slideCount = slides.length;
+        let currentSlide = 0;
+
+        if (slideCount > 1) {
+            setInterval(() => {
+                currentSlide = (currentSlide + 1) % slideCount;
+                slideshowWrapper.style.transform = `translateX(-${currentSlide * 100}%)`;
+            }, 5000); // Muda de slide a cada 5 segundos
+        }
+    }
 });
 
-// --- LÓGICA DO MENU E NAVEGAÇÃO (EXECUTADA QUANDO TUDO, INCLUINDO FONTES, ESTÁ CARREGADO) ---
+// --- LÓGICA DO MENU E NAVEGAÇÃO (EXECUTADA QUANDO TUDO, INCLUindo FONTES, ESTÁ CARREGADO) ---
 window.addEventListener('load', () => {
     console.log('Window Loaded. Setting up navigation menu.');
 
@@ -71,7 +85,7 @@ window.addEventListener('load', () => {
     const navPill = document.querySelector('.nav-pill');
     const navLinks = document.querySelectorAll('.nav-link');
     const pageContents = document.querySelectorAll('.page-content');
-    const readMoreLink = document.getElementById('read-more-construcao');
+    const readMoreLink = document.getElementById('read-more-welcome');
     const mainNav = document.querySelector('.main-nav');
     const navLinksWrapper = document.querySelector('.nav-links-wrapper');
     const navPrev = document.getElementById('nav-prev');
@@ -108,10 +122,16 @@ window.addEventListener('load', () => {
         readMoreLink.addEventListener('click', (e) => {
             e.preventDefault();
             const targetPageId = readMoreLink.getAttribute('data-page');
-            showPage(targetPageId);
-            navLinks.forEach(navLink => navLink.classList.remove('active'));
-            if (navPill) navPill.style.width = '0';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            const targetNavLink = document.querySelector(`.nav-link[data-page="${targetPageId}"]`);
+
+            if (targetNavLink) {
+                // Simula o clique no link do menu correspondente
+                navLinks.forEach(navLink => navLink.classList.remove('active'));
+                targetNavLink.classList.add('active');
+                movePill(targetNavLink);
+                showPage(targetPageId);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
         });
     }
 
@@ -170,7 +190,7 @@ window.addEventListener('load', () => {
     // Espera as fontes carregarem ANTES de inicializar o menu.
     if (document.fonts) {
         document.fonts.ready.then(() => {
-            console.log('All fonts have loaded. Running initMenu.');
+            console.log('All fonts have been loaded. Running initMenu.');
             initMenu();
         });
     } else {
